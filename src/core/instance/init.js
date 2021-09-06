@@ -40,7 +40,7 @@ export function initMixin(Vue){
 		
 		// initState(vm)
 		initLifecycle(vm)
-		// initEvents(vm)
+		initEvents(vm)
 
 		if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
 			// vm._name = formatComponentName(vm, false)

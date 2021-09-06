@@ -1,4 +1,4 @@
-import { toArray } from './util'
+import { toArray } from '../util'
 
 /**
  * @param {Object} Vue
@@ -6,21 +6,20 @@ import { toArray } from './util'
  */
 export function initUse(Vue) {
 	Vue.use = function(plugin) {
-		const installedPlugins = (this._installedPlugin || (this._installedPlugin = []))
+		const installedPlugins = (this._installedPlugins || (this._installedPlugins = []))
 		if(installedPlugins.indexOf(plugin) > -1){
 			return this
 		}
+		//additional parameters
+		const args = toArray(arguments, 1);
+		args.unshift(this)
+		console.log(args)
+		if(typeof plugin.install === 'function') {
+			plugin.install.apply(plugin, args)
+		}else if (typeof plugin === 'function'){
+			plugin.apply(null, args)
+		}
+		installedPlugins.push(plugin)
+		return this
 	}
-	
-	//additional parameters
-	const args = toArray(arguments, 1);
-	args.unshift(this)
-	
-	if(typeof plugin.install === 'function') {
-		plugin.install.apply(plugin, args)
-	}else if (typeof plugin === 'function'){
-		plugin.apply(null, args)
-	}
-	installedPlugins.push(plugin)
-	return this
 }

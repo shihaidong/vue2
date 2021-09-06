@@ -27,3 +27,4 @@ export function initLifecycle(vm){
 	vm._isBeingDestroyed = false
 	
 }
+

@@ -1,5 +1,5 @@
 import config from '../config'
-// import { initUse } from './use'
+import { initUse } from './use'
 import { initMixin } from './mixin'
 import { set, del } from '../observer/index'
 
@@ -34,6 +34,6 @@ export function initGlobalAPI(Vue){
 	Vue.options = Object.create(null)
 	Vue.options._base = Vue
 	// extend(Vue.options.components, builtInComponents);
-	// initUse(Vue)
+	initUse(Vue)
 	initMixin(Vue)
 }

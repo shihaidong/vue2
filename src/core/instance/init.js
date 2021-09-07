@@ -1,3 +1,4 @@
+console.log("core/instance/init1")
 import { mark, measure } from '../util/perf'
 import { mergeOptions } from '../util'
 import config from '../config.js'
@@ -6,9 +7,11 @@ import { initLifecycle } from './lifecycle'
 import { initEvents } from './event'
 
 let uid = 0
-
+console.log("core/instance/init2")
 export function initMixin(Vue){
+	console.log("core/instance/init3")
 	Vue.prototype._init = function(options){
+		console.log("core/instance/init4")
 		const vm = this;
 		vm._uid = uid++
 		let startTag, endTag
@@ -53,6 +56,7 @@ export function initMixin(Vue){
 		// if (vm.$options.el) {
 		// 	// vm.$mount(vm.$options.el)
 		// }
+		console.log("core/instance/init5")
 	}
 }
 

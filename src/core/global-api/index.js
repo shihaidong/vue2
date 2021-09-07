@@ -9,8 +9,9 @@ import {
 	mergeOptions,
 	defineReactive
 } from '../util'
-
+console.log("core/global-api/index1")
 export function initGlobalAPI(Vue){
+	console.log("core/global-api/index2")
 	const configDef = {}
 	configDef.get = () => config
 	
@@ -36,4 +37,5 @@ export function initGlobalAPI(Vue){
 	// extend(Vue.options.components, builtInComponents);
 	initUse(Vue)
 	initMixin(Vue)
+	console.log("core/global-api/index3")
 }

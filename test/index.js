@@ -16,4 +16,4 @@ let k = observe(s1, true);
 
 
 // k.value = Object.freeze(t)
-console.log(s1)
+// console.log(s1)

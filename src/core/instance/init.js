@@ -4,7 +4,8 @@ import { mergeOptions, test } from '../util'
 import config from '../config.js'
 
 import { initLifecycle } from './lifecycle'
-import { initEvents } from './event'
+import { initEvents } from './events'
+import { initRender } from './render'
 
 let uid = 0
 test("core/instance/init2")
@@ -44,7 +45,7 @@ export function initMixin(Vue){
 		// initState(vm)
 		initLifecycle(vm)
 		initEvents(vm)
-
+		initRender(vm)
 		if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
 			// vm._name = formatComponentName(vm, false)
 			mark(endTag)

@@ -1,4 +1,3 @@
-
 //判断当前环境是否可以使用原型链
 export const hasProto = '__proto__' in {}
 

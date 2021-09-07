@@ -1,6 +1,7 @@
-console.log("test/index1")
+test("test/index1")
+import { test } from '../src/core/util/debug'
 import Vue from '../src/core/index'
-console.log("test/index2")
+test("test/index2")
 let k = new Vue({
 	el:'#app',
 	data(){
@@ -12,7 +13,7 @@ let k = new Vue({
 		
 	}
 });
-console.log("test/index3")
+test("test/index3")
 // k.$options._base.mixin({
 // 	methods:{
 // 		test(){

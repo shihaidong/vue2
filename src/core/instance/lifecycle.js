@@ -1,9 +1,10 @@
 /**
  * @param {Component} vm
  */
-console.log("core/instance/lifecycle1")
+import { test } from '../util'
+test("core/instance/lifecycle1")
 export function initLifecycle(vm){
-	console.log('core/instance/lifecycle2')
+	test('core/instance/lifecycle2')
 	const options = vm.$options
 	let parent = options.parent
 	if(parent && !options.abstract) {
@@ -24,6 +25,6 @@ export function initLifecycle(vm){
 	vm._isMounted = false
 	vm._isDestroyed = false
 	vm._isBeingDestroyed = false
-	console.log('core/instance/lifecycle3')
+	test('core/instance/lifecycle3')
 }
 

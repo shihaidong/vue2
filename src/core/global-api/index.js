@@ -7,11 +7,12 @@ import {
 	extend,
 	// nextTick,
 	mergeOptions,
-	defineReactive
+	defineReactive,
+	test
 } from '../util'
-console.log("core/global-api/index1")
+test("core/global-api/index1")
 export function initGlobalAPI(Vue){
-	console.log("core/global-api/index2")
+	test("core/global-api/index2")
 	const configDef = {}
 	configDef.get = () => config
 	
@@ -37,5 +38,5 @@ export function initGlobalAPI(Vue){
 	// extend(Vue.options.components, builtInComponents);
 	initUse(Vue)
 	initMixin(Vue)
-	console.log("core/global-api/index3")
+	test("core/global-api/index3")
 }

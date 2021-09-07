@@ -1,6 +1,7 @@
-console.log("core/instance/index1")
+test("core/instance/index1")
+import { test } from '../util'
 import { initMixin } from './init'
-console.log("core/instance/index2")
+test("core/instance/index2")
 function Vue(options){
 	if(process.env.NODE_ENV !== 'production' &&
 		!(this instanceof Vue)
@@ -11,6 +12,6 @@ function Vue(options){
 }
 
 initMixin(Vue)
-console.log("core/instance/index3")
+test("core/instance/index3")
 
 export default Vue

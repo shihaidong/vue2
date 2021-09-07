@@ -47,6 +47,18 @@ let vue = {
 
 + 模块加载也存在"提升"现象
 
++ 避免循环导入
+
+  ![config](.\assets\config.png)
+
+  ![debug](.\assets\debug.png)
+
+  ![index](.\assets\index.png)
+
+  ![console](.\assets\console.png)
+
+  - 循环导入导致no为undefined
+
 
 
 > ​	初始化

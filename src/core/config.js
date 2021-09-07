@@ -1,5 +1,6 @@
 import { no } from './util'
 export default {
+  isTest: false,
   /**
    * Option merge strategies (used in core/util/options)
    */

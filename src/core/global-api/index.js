@@ -1,6 +1,7 @@
 import config from '../config'
 import { initUse } from './use'
 import { initMixin } from './mixin'
+import { initExtend } from './extend'
 import { set, del } from '../observer/index'
 
 import {
@@ -38,5 +39,6 @@ export function initGlobalAPI(Vue){
 	// extend(Vue.options.components, builtInComponents);
 	initUse(Vue)
 	initMixin(Vue)
+	initExtend(Vue)
 	test("core/global-api/index3")
 }

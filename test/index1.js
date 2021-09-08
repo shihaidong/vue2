@@ -1,6 +1,7 @@
 test("test/index1")
 import { test } from '../src/core/util/debug'
 import Vue from '../src/core/index'
+import Watcher from '../src/core/observer/watcher'
 test("test/index2")
 let k = new Vue({
 	el:'#app',
@@ -13,6 +14,10 @@ let k = new Vue({
 		
 	}
 });
+
+let watcher = new Watcher(k, '1$tes11t', function(e){
+	console.log(e)
+}, {deep: true}, true)
 test("test/index3")
 // k.$options._base.mixin({
 // 	methods:{

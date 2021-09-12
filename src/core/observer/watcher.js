@@ -68,7 +68,7 @@ export default class Watcher {
       this.getter = expOrFn
     } else {
       this.getter = parsePath(expOrFn)
-      console.log(this.getter)
+      // console.log(this.getter)
       if (!this.getter) {
         this.getter = noop
         process.env.NODE_ENV !== 'production' && console.error(

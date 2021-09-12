@@ -9,6 +9,7 @@ export function initExtend(Vue){
   Vue.extend = function(extendOptions) {
     extendOptions = extendOptions || {}
     const Super = this
+    console.log(Super.prototype)
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if(cachedCtors[SuperId]) {
@@ -25,6 +26,8 @@ export function initExtend(Vue){
     }
 
     Sub.prototype = Object.create(Super.prototype)
+    // Sub.prototype = Super.prototype
+    // console.log(Object.create(Super.prototype))
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
     Sub.options = mergeOptions(Super.options, extendOptions)
@@ -41,7 +44,19 @@ export function initExtend(Vue){
     Sub.extend = Super.extend
     Sub.mixin = Super.mixin
     Sub.use = Super.use
+    ASSET_TYPES.forEach(function(type){
+      Sub[type] = Super[type]
+    })
+    // if(name){
+    //   Sub.options.components[name] = Sub
+    // }
 
+    Sub.superOptions = Super.options
+    Sub.extendOptions = extendOptions
+    // Sub.sealedOptions = extend({}, Sub.options)
+
+    cachedCtors[SuperId] = Sub
+    return Sub
   }
 }
 

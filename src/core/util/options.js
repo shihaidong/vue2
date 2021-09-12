@@ -1,5 +1,6 @@
 import config from '../config'
 import { unicodeRegExp } from './lang'
+import { isBuiltInTag  } from './util'
 import { set } from '../observer'
 
 import {

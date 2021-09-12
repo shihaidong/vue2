@@ -7,7 +7,8 @@ module.exports = {
 		index2: './test/index1.js',
 		stateTest: './test/stateTest.js',
 		depTest: './test/depTest.js',
-		watcherTest: './test/watcherTest.js'
+		watcherTest: './test/watcherTest.js',
+		extendTest: './test/extendTest.js'
 	},
 	output: {
 		filename: '[name].js',

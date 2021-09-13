@@ -8,6 +8,24 @@ import {
 	LIFECYCLE_HOOKS
 } from './constants'
 
+const strats = config.optionMergeStrategies
+
+if(process.env.NODE_ENV != 'production') {
+	strats.el = strats.propsData = function(parent, child, vm, key) {
+		if(!vm) {
+			console.error(`option "${key}" can only be used during instance ` +
+			'creation with the `new` keyword.'
+			)
+		}
+		return defaultStrat(parent, child)
+	}
+}
+
+const defaultStrat = function(parentVal, childVal) {
+	return childVal === undefined ? parentVal : childVal
+}
+
+
 /**
  * Validate component names
  * @param {Object} options
@@ -28,7 +46,7 @@ export function validateComponentName (name) {
     )
   }
 	/**
-	 * slot和component不可座位name
+	 * slot和component不可作为name
 	 */
   if (isBuiltInTag(name) || config.isReservedTag(name)) {
     console.error(
@@ -45,9 +63,10 @@ export function validateComponentName (name) {
  */
 export function mergeOptions (parent, child, vm) {
 	return Object.assign(parent, child)
-	// if(process.env.NODE_ENV !== 'production') {
-	// 	checkComponents(child);
-	// }
+	if(process.env.NODE_ENV !== 'production') {
+		//检查所有注册在该vue实例上的组件名称是否‘合法’
+		checkComponents(child);
+	}
 	
 	// if(typeof child === 'function') {
 	// 	child = child.options

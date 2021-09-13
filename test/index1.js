@@ -11,7 +11,9 @@ let k = new Vue({
 		}
 	},
 	methods: {
-		
+		test(){
+			console.log(this)
+		}
 	}
 });
 

@@ -2,14 +2,16 @@ import config from '../config'
 import { initUse } from './use'
 import { initMixin } from './mixin'
 import { initExtend } from './extend'
-import { set, del } from '../observer/index'
+import { initAssetRegisters } from './assets'
+import { set, del, observe } from '../observer/index'
 
 import {
 	extend,
 	// nextTick,
 	mergeOptions,
 	defineReactive,
-	test
+	test,
+	ASSET_TYPES
 } from '../util'
 test("core/global-api/index1")
 export function initGlobalAPI(Vue){
@@ -33,12 +35,20 @@ export function initGlobalAPI(Vue){
 	Vue.set = set
 	Vue.delete = del
 	// Vue.nextTick = nextTick
+	Vue.observable = (obj) => {
+		observe(obj)
+		return obj
+	}
 	
 	Vue.options = Object.create(null)
+	ASSET_TYPES.forEach(type => {
+		Vue.options[type + 's'] = Object.create(null)
+	})
 	Vue.options._base = Vue
 	// extend(Vue.options.components, builtInComponents);
 	initUse(Vue)
 	initMixin(Vue)
 	initExtend(Vue)
+	initAssetRegisters(Vue)
 	test("core/global-api/index3")
 }

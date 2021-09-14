@@ -139,8 +139,8 @@ export const no = (a, b, c) => false
  * @return {Object}
  */
 export function extend(to, _from) {
-	for(const key in _form){
-		to[key] = _form[key]
+	for(const key in _from){
+		to[key] = _from[key]
 	}
 	return to
 }

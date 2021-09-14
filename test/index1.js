@@ -3,6 +3,18 @@ import { test } from '../src/core/util/debug'
 import Vue from '../src/core/index'
 import Watcher from '../src/core/observer/watcher'
 test("test/index2")
+Vue.mixin({
+	data(){
+		return{
+			name: 'shi'
+		}
+	},
+	methods:{
+		test1(){
+			console.log('nn')
+		}
+	}
+})
 let k = new Vue({
 	el:'#app',
 	data(){
@@ -10,8 +22,13 @@ let k = new Vue({
 			name: 'shi'
 		}
 	},
+	// filters: {
+	// 	// dateAccess(data){
+
+	// 	// }
+	// },
 	methods: {
-		test(){
+		test2(){
 			console.log(this)
 		}
 	}

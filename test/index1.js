@@ -17,9 +17,9 @@ let k = new Vue({
 	}
 });
 
-let watcher = new Watcher(k, '1$tes11t', function(e){
-	// console.log(e)
-}, {deep: true}, true)
+// let watcher = new Watcher(k, '1$tes11t', function(e){
+// 	// console.log(e)
+// }, {deep: true}, true)
 test("test/index3")
 // k.$options._base.mixin({
 // 	methods:{

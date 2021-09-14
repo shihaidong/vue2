@@ -24,25 +24,16 @@ export function initMixin(Vue){
 		}
 		//a flag to avoid this being observed
 		vm._isVue = true;
-		console.log("*************")
-		console.log("*************")
-		console.log("*************")
-		console.log("*************")
-		console.log("*************")
-
 		// merge options
 		if(options && options._isComponent) {
 			initInternalComponent(vm, options)
 		}else{
-			console.log(resolveConstructorOptions(vm.constructor).el)
 			vm.$options = mergeOptions(
 				resolveConstructorOptions(vm.constructor),
 				options || {},
 				vm
 			)
-			console.log(resolveConstructorOptions(vm.constructor).el)
 		}
-
 		if(process.env.NODE_ENV !== 'production') {
 			// initProxy(vm)
 		}else{
@@ -50,11 +41,10 @@ export function initMixin(Vue){
 		}
 		vm._self = vm;
 		
+		// initLifecycle(vm)
+		// initEvents(vm)
+		// initRender(vm)
 		// initState(vm)
-		initLifecycle(vm)
-		initEvents(vm)
-		initRender(vm)
-		initState(vm)
 		if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
 			// vm._name = formatComponentName(vm, false)
 			mark(endTag)

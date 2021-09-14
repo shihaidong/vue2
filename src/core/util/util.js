@@ -32,6 +32,15 @@ export function isPrimitive (value) {
 const _toString = Object.prototype.toString;
 
 /**
+ * 
+ * val = '[object Array]'
+ * output = 'Array'
+ */
+export function toRawType(val){
+	return _toString.call(value).slice(8,-1)
+}
+
+/**
  * Strick object type check. Only returns true for plain JavaScript objects.
  */
 export function isPlainObject (obj) {
@@ -57,7 +66,33 @@ export function hasOwn (obj, key) {
   return hasOwnProperty.call(obj, key)
 }
 
+export function cached(fn) {
+	const cache = Object.create(null)
+	return (function cachedFn(str) {
+		const hit = cache[str]
+		return hit || (cache[str] = fn(str))
+	})
+}
 
+/**
+ * str = 'background-color'
+ * output = 'backgroundColor'
+ */
+const camelizeRE = /-(\w)/g
+export const camelize = cached((str) => {
+	return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
+})
+
+
+/**
+ * Hyphenate a camelCase string
+ * str = 'BackgroundColor'
+ * output = 'background-color'
+ */
+const hyphenateRE = /\B([A-Z])/g
+export const hyphenate = cached((str) => {
+	return str.replace(hyphenateRE, '-$1').toLowerCase()
+})
 /**
  * Remove an item from an array.
  * @param {Array} arr  
@@ -102,9 +137,6 @@ export const no = (a, b, c) => false
  * @param {Object} to
  * @param {Object} _from
  * @return {Object}
- * input {a:1, b:2} {c: 3}
- * 		-> extend(to, _from)
- * output {a: 1,b:2} 包括原型上的property（可枚举的）
  */
 export function extend(to, _from) {
 	for(const key in _form){
@@ -138,6 +170,8 @@ export function once(fn){
 		}
 	}
 }
+
+
 
 function polyfillBind(fn, ctx) {
 	function boundFn(a){

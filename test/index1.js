@@ -2,6 +2,7 @@ test("test/index1")
 import { test } from '../src/core/util/debug'
 import Vue from '../src/core/index'
 import Watcher from '../src/core/observer/watcher'
+import mixin from './mixins'
 test("test/index2")
 Vue.mixin({
 	data(){
@@ -15,8 +16,26 @@ Vue.mixin({
 		}
 	}
 })
+Vue.mixin({
+	data(){
+		return {
+			age: 23
+		}
+	},
+	methods:{
+		test3(){
+			console.log('test3')
+		}
+	}
+})
+Vue.use({
+	install(Vue,options){
+		console.log(arguments)
+	}
+}, {name: 'shi'})
 let k = new Vue({
 	el:'#app',
+	mixins: [mixin],
 	data(){
 		return {
 			name: 'shi'

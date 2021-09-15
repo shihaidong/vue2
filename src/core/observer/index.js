@@ -209,12 +209,13 @@ export function set (target, key, val) {
     return val
   }
   if (key in target && !(key in Object.prototype)) {
+    console.log("z888")
     target[key] = val
     return val
   }
   const ob = (target).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && console.warn(
+    process.env.NODE_ENV !== 'production' && console.error(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +
       'at runtime - declare it upfront in the data option.'
     )

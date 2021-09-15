@@ -1,5 +1,6 @@
 import config from '../config'
 import { unicodeRegExp } from './lang'
+import { nativeWatch, hasSymbol } from './env'
 import {
 	isBuiltInTag,
 	hasOwn,
@@ -188,22 +189,21 @@ strats.watch = function (parentVal, childVal, vm, key) {
 }
 
 strats.props =
-	strats.methods =
-	strats.inject =
-	strats.computed = function (parentVal, childVal, vm, key) {
-		if (childVal && process.env.NODE_ENV !== 'production') {
-			assertObjectType(key, childVal, vm)
-		}
-		if (!parentVal) return childVal
-		const ret = Object.create(null)
-		extend(ret, parentVal)
-		if (childVal) extend(ret, childVal)
-		return ret
+strats.methods =
+strats.inject =
+strats.computed = function (parentVal, childVal, vm, key) {
+	if (childVal && process.env.NODE_ENV !== 'production') {
+		assertObjectType(key, childVal, vm)
 	}
+	if (!parentVal) return childVal
+	const ret = Object.create(null)
+	extend(ret, parentVal)
+	if (childVal) extend(ret, childVal)
+	return ret
+}
 
 strats.provide = mergeDataOrFn
 
-console.log(strats)
 /**
  * Validate component names
  * @param {Object} options

@@ -7,10 +7,12 @@ import {
 	isPrimitive,
 	isUndef,
 	isValidArrayIndex,
-	isServerRendering
+	isServerRendering,
+  hasProto
 }
 from '../util'
 import { arrayMethods } from './array'
+import VNode from '../vdom/vnode'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
@@ -42,7 +44,7 @@ export class Observer {
     this.vmCount = 0
     def(value, '__ob__', this)
     if (Array.isArray(value)) {
-      if (true) {
+      if (hasProto) {
         protoAugment(value, arrayMethods)
       } else {
         copyAugment(value, arrayMethods, arrayKeys)
@@ -52,7 +54,6 @@ export class Observer {
       this.walk(value)
     }
   }
-
   /**
    * Walk through all properties and convert them into
    * getter/setters. This method should only be called when
@@ -97,7 +98,7 @@ function protoAugment (target, src) {
  */
 export function observe (value, asRootData) {
 	//value instanceof VNode
-  if (!isObject(value) || false) {
+  if (!isObject(value) || value instanceof VNode) {
     return
   }
   let ob;
@@ -143,10 +144,10 @@ export function defineReactive (
   // cater for pre-defined getter/setters
   const getter = property && property.get
   const setter = property && property.set
+  //如果getter不存在或者setter存在
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
-
   let childOb = !shallow && observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,

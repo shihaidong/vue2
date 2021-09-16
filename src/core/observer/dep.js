@@ -28,6 +28,7 @@ export default class Dep {
   notify () {
     // stabilize the subscriber list first
     const subs = this.subs.slice()
+    console.log(subs)
 		//config.async默认为true
     if (process.env.NODE_ENV !== 'production' && !config.async) {
       // subs aren't sorted in scheduler if not running async

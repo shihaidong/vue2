@@ -1,5 +1,4 @@
 import { def } from '../util/index'
-import Dep from './dep'
 const arrayProto = Array.prototype
 export const arrayMethods = Object.create(arrayProto)
 

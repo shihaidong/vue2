@@ -1,9 +1,18 @@
 import { isObject } from "../util"
 import VNode from '../vdom/vnode'
 const seenObjects = new Set()
+
+/**
+ * 
+ * @param {*} val 
+ * 
+ * { 'active': true, 'text-danger' : false}
+ * [ 'active', {'text': true}, true ? 'start' : 'end']
+ */
 export function traverse(val){
   _traverse(val, seenObjects)
-  seenObjects.clear()
+  console.log(seenObjects)
+  // seenObjects.clear()
 }
 
 function _traverse (val, seen){
@@ -15,7 +24,7 @@ function _traverse (val, seen){
   }
 
   if(val.__ob__){
-    const depId = val.__ob__.dep.depId
+    const depId = val.__ob__.dep.id
     if(seen.has(depId)){
       return
     }

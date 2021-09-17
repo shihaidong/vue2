@@ -41,10 +41,10 @@ export function initMixin(Vue){
 		}
 		vm._self = vm;
 		
-		// initLifecycle(vm)
-		// initEvents(vm)
-		// initRender(vm)
-		// initState(vm)
+		initLifecycle(vm)
+		initEvents(vm)
+		initRender(vm)
+		initState(vm)
 		if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
 			// vm._name = formatComponentName(vm, false)
 			mark(endTag)

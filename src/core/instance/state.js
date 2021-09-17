@@ -1,8 +1,9 @@
 import config from '../config'
 import {
-	noop, test
+	noop, test, hasOwn, isReserved, bind
 }from '../util'
 import { createComponent } from '../vdom/create-component'
+import { observe } from '../observer'
 
 
 /**
@@ -11,9 +12,17 @@ import { createComponent } from '../vdom/create-component'
 export function initState(vm){
 	vm._watchers = []
 	const opts = vm.$options
-	// if(opts.props) initProps(vm, opts.props)
-	// if(opts.methods) initMethods(vm, opts.methods)
-	
+	if(opts.props) initProps(vm, opts.props)
+	if(opts.methods) initMethods(vm, opts.methods)
+	if(opts.data){
+		initData(vm)
+	}else{
+		observe(vm._data = {}, true)
+	}
+	if(opts.computed) initComputed(vm, ops.computed)
+	if(opts.watch && opts.watch !== nativeWatch) {
+		initWatch(vm, opts.watch)
+	}
 }
 
 const sharedPropertyDefinition = {
@@ -67,5 +76,31 @@ export function defineComputed(target, key, userDef){
 function createComputedGetter(key){
 	return function computedGetter(){
 		const watcher = this._computedWatchers && this._computedWatchers[key]
+	}
+}
+
+function initMethods (vm, methods){
+	const props = vm.$options.props
+	for(const key in methods) {
+		if(process.env.NODE_ENV !== 'production') {
+			if(typeof methods[key] !== 'function') {
+				console.error(
+					`Method "${key}" has type "${typeof methods[key]}" in the component definition. ` +
+          `Did you reference the function correctly?`
+				)
+			}
+			if(props && hasOwn(props, key){
+				console.error(
+					`Method "${key}" has already been defined as a prop.`
+				)
+			}
+			if((key in vm) && isReserved(key)){
+				console.error(
+					`Method "${key}" conflicts with an existing Vue instance method. ` +
+          `Avoid defining component methods that start with _ or $.`
+				)
+			}
+		}
+		vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
 	}
 }

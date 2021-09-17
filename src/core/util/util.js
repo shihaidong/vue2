@@ -1,3 +1,4 @@
+export const emptyObject = Object.freeze({})
 export function isObject (obj) {
   return obj !== null && typeof obj === 'object'
 }

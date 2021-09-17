@@ -58,6 +58,7 @@ export class Observer {
    * Walk through all properties and convert them into
    * getter/setters. This method should only be called when
    * value type is Object.
+   * 只有自身的可枚举属性才会被设置为响应式数据
    */
   walk (obj) {
     const keys = Object.keys(obj)
@@ -95,6 +96,8 @@ function protoAugment (target, src) {
  * @param {any} value 
  * @param {asRootData} boolean 
  * @return {Observer | void}  
+ * 如果传入的是一个对象，则判断是否已经是Observer，直接返回，
+ * 如果不是则用该对象实例化Observer再返回
  */
 export function observe (value, asRootData) {
 	//value instanceof VNode
@@ -209,11 +212,12 @@ export function set (target, key, val) {
     target.splice(key, 1, val)
     return val
   }
+  //如果该property存在直接，则只修改其值
   if (key in target && !(key in Object.prototype)) {
-    console.log("z888")
     target[key] = val
     return val
   }
+  
   const ob = (target).__ob__
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && console.error(

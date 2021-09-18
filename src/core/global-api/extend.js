@@ -9,8 +9,8 @@ export function initExtend(Vue){
   Vue.extend = function(extendOptions) {
     extendOptions = extendOptions || {}
     const Super = this
-    console.log(Super.prototype)
     const SuperId = Super.cid
+    //如果该组件已被注册，不会再被注册
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if(cachedCtors[SuperId]) {
       return cachedCtors[SuperId]

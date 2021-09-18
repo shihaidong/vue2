@@ -240,6 +240,7 @@ export function validateComponentName(name) {
  * @return {Object}
  */
 export function mergeOptions(parent, child, vm) {
+	console.log(parent,child)
 	if (process.env.NODE_ENV !== 'production') {
 		//检查所有注册在该vue实例上的组件名称是否‘合法’
 		checkComponents(child);

@@ -1,9 +1,10 @@
 import config from '../config'
 import {
-	noop, test, hasOwn, isReserved, bind
+	noop, test, hasOwn, isReserved, bind, isPlainObject
 }from '../util'
 import { createComponent } from '../vdom/create-component'
 import { observe } from '../observer'
+import { pushTarget, popTarget } from '../observer/dep'
 
 
 /**
@@ -89,7 +90,7 @@ function initMethods (vm, methods){
           `Did you reference the function correctly?`
 				)
 			}
-			if(props && hasOwn(props, key){
+			if(props && hasOwn(props, key)){
 				console.error(
 					`Method "${key}" has already been defined as a prop.`
 				)
@@ -102,5 +103,62 @@ function initMethods (vm, methods){
 			}
 		}
 		vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
+	}
+}
+
+
+function initData(vm) {
+	let data = vm.$options.data
+	data = vm._data = typeof data === 'function'
+		? getData(data, vm)
+		: data || {}
+	if(!isPlainObject(data)) {
+		data = {}
+		process.env.NODE_ENV !== 'production' && console.error(
+			'data functions should return an object:\n' +
+      'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function'
+		)
+	}
+	//proxy data on instance
+	const keys = Object.keys(data)
+	const porps = vm.$options.props
+	let i = keys.length
+	while(i--){
+		const key = keys[i]
+		if(process.env.NODE_ENV !== 'production') {
+			if(methods && hasOwn(methods, key)) {
+				console.error(
+					`Method "${key}" has already been defined as a data property.`
+				)
+			}
+		}
+
+		if(props && hasOwn(props, key)) {
+			process.env.NODE_ENV !== 'production' && console.error(
+				`The data property "${key}" is already declared as a prop. ` +
+        `Use prop default value instead.`
+			)
+		} else if(!isReserved(key)) {
+			proxy(vm, `_data`, key)
+		}
+	}
+	observe(data, true)
+}
+
+/**
+ * 
+ * @param {Functoin} data 
+ * @param {Component} vm 
+ */
+export function getData(data, vm) {
+	pushTarget()
+	// data.call(vm, vm)
+	try{
+		return data.call(vm, vm)
+	} catch (e){
+		// handleError(e, vm, `data()`)
+		return {}
+	} finally {
+		popTarget()
 	}
 }

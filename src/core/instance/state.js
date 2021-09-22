@@ -3,7 +3,7 @@ import {
 	noop, test, hasOwn, isReserved, bind, isPlainObject
 }from '../util'
 import { createComponent } from '../vdom/create-component'
-import { observe } from '../observer'
+import { observe, toggleObserving } from '../observer'
 import { pushTarget, popTarget } from '../observer/dep'
 
 
@@ -25,7 +25,15 @@ export function initState(vm){
 		initWatch(vm, opts.watch)
 	}
 }
-
+function initProps(vm, propsOptions){
+	const propsData = vm.$options.propsData || {}
+	const props = vm._props = {}
+	const keys = vm.$options._propKeys = []
+	const isRoot = !vm.$parent
+	if(!isRoot){
+		toggleObserving(false)
+	}
+}
 const sharedPropertyDefinition = {
 	enumerabled: true,
 	configurable: true,
@@ -121,7 +129,8 @@ function initData(vm) {
 	}
 	//proxy data on instance
 	const keys = Object.keys(data)
-	const porps = vm.$options.props
+	const props = vm.$options.props
+	const methods = vm.$options.methods
 	let i = keys.length
 	while(i--){
 		const key = keys[i]

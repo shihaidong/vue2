@@ -16,6 +16,7 @@ import {
 	LIFECYCLE_HOOKS
 } from './constants'
 
+//Object.create(null)
 const strats = config.optionMergeStrategies
 
 if (process.env.NODE_ENV != 'production') {
@@ -32,7 +33,7 @@ if (process.env.NODE_ENV != 'production') {
 const defaultStrat = function (parentVal, childVal) {
 	return childVal === undefined ? parentVal : childVal
 }
-strats.data = function (parentVal, childVal, vm) {
+strats.data = function (parentVal, childVal, vm, key) {
 	if (!vm) {
 		if (childVal && typeof childVal !== 'function') {
 			process.env.NODE_ENV !== 'production' && console.error(
@@ -46,7 +47,22 @@ strats.data = function (parentVal, childVal, vm) {
 	}
 	return mergeDataOrFn(parentVal, childVal, vm)
 }
-
+/**
+ * 
+ * @param {Function} parentVal 
+ * @param {Function} childVal 
+ * @param {*} vm 
+ * parentVal = function(){
+ * 	return {
+ * 		name: 'shi'
+ * 	}
+ * }
+ * childVal = function(){
+ * 	return {
+ * 		age: 32
+ * 	}
+ * }
+ */
 export function mergeDataOrFn(parentVal, childVal, vm) {
 	if (!vm) {
 		if (!childVal) {
@@ -58,13 +74,13 @@ export function mergeDataOrFn(parentVal, childVal, vm) {
 		return function mergedDataFn() {
 			return mergeData(
 				typeof childVal === 'function' ? childVal.call(this, this) : childVal,
-				typeof parentVal === 'functoin' ? parentVal.call(this, this) : parentVal
+				typeof parentVal === 'function' ? parentVal.call(this, this) : parentVal
 			)
 		}
 	} else {
 		return function mergedInstnceDataFn() {
 			//instance merge
-			const instanceData = typeof childVal === 'functoin'
+			const instanceData = typeof childVal === 'function'
 				? childVal.call(vm, vm)
 				: childVal
 			const defaultData = typeof parentVal === 'function'
@@ -87,7 +103,6 @@ export function mergeDataOrFn(parentVal, childVal, vm) {
 function mergeData(to, from) {
 	if (!from) return to
 	let key, toVal, fromVal
-
 	const keys = hasSymbol
 		? Reflect.ownKeys(from)
 		: Object.keys(from)
@@ -240,7 +255,6 @@ export function validateComponentName(name) {
  * @return {Object}
  */
 export function mergeOptions(parent, child, vm) {
-	console.log(parent,child)
 	if (process.env.NODE_ENV !== 'production') {
 		//检查所有注册在该vue实例上的组件名称是否‘合法’
 		checkComponents(child);
@@ -273,16 +287,15 @@ export function mergeOptions(parent, child, vm) {
 		mergeField(key)
 	}
 	for (key in child) {
-		if (!hasOwn(parent, key)) {
+		if (!hasOwn(parent, key)) {	//***与下列有关 */
 			mergeField(key)
 		}
 	}
 	function mergeField(key) {
 		const strat = strats[key] || defaultStrat
-		options[key] = strat(parent[key], child[key], vm, key)
+		options[key] = strat(parent[key], child[key], vm, key)	//***与上列有关 */
 	}
 	return options
-
 }
 
 /**

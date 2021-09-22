@@ -48,15 +48,11 @@ let k = new Vue({
 			name: 'shi'
 		}
 	},
-	// components:{
-	// 	HelloWorld:{
-	// 		data(){
-	// 			return {
-
-	// 			}
-	// 		}
-	// 	}
-	// },
+	components:{
+		age:function(){
+			return this.name
+		}
+	},
 	// filters: {
 	// 	// dateAccess(data){
 

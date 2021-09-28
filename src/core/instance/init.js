@@ -3,10 +3,11 @@ import { mark, measure } from '../util/perf'
 import { mergeOptions, test } from '../util'
 import config from '../config.js'
 
-import { initLifecycle } from './lifecycle'
+import { initLifecycle, callHook } from './lifecycle'
 import { initEvents } from './events'
 import { initRender } from './render'
 import { initState } from './state'
+import { initInjections, initProvide } from './inject'
 
 let uid = 0
 test("core/instance/init2")
@@ -40,17 +41,22 @@ export function initMixin(Vue){
 			vm._renderProxy = vm
 		}
 		vm._self = vm;
-		
+		//beforeCreate
 		initLifecycle(vm)
 		initEvents(vm)
+		//created
 		initRender(vm)
+		callHook(vm, 'beforeCreate')
+		initInjections(vm)
 		initState(vm)
+		initProvide(vm)
+		callHook(vm, 'created')
+		
 		if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
 			// vm._name = formatComponentName(vm, false)
 			mark(endTag)
 			measure(`vue lll init`, startTag, endTag)
 			test(performance.getEntriesByName('vue lll init')[0].duration)
-			
 		}
 
 		// if (vm.$options.el) {

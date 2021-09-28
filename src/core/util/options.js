@@ -154,6 +154,7 @@ function dedupeHooks(hooks) {
 			res.push(hooks[i])
 		}
 	}
+	return res
 }
 
 

@@ -5,16 +5,16 @@ export const ASSET_TYPES = [
 ]
 
 export const LIFECYCLE_HOOKS = [
-	'beforeCreated',
-	'created',
-	'beforeMount',
-	'mounted',
-	'beforeUpdate',
-	'updated',
-	'beforeDestory',
-	'destoryed',
-	'activated',
-	'deactivated',
-	// 'errorCaptured',
-	// 'serverPrefetch'
+  'beforeCreate',
+  'created',
+  'beforeMount',
+  'mounted',
+  'beforeUpdate',
+  'updated',
+  'beforeDestroy',
+  'destroyed',
+  'activated',
+  'deactivated',
+  // 'errorCaptured',
+  // 'serverPrefetch'
 ]

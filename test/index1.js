@@ -14,6 +14,9 @@ test("test/index2")
 // 		test1(){
 // 			console.log('nn')
 // 		}
+// 	},
+// 	beforeCreate(){
+// 		console.log("****")
 // 	}
 // })
 // Vue.mixin({
@@ -35,11 +38,11 @@ test("test/index2")
 // 		}
 // 	}
 // })
-Vue.use({
-	install(Vue,options){
-		console.log(arguments)
-	}
-}, {name: 'shi'})
+// Vue.use({
+// 	install(Vue,options){
+// 		console.log(arguments)
+// 	}
+// }, {name: 'shi'})
 let k = new Vue({
 	el:'#app',
 	// mixins: [mixin],
@@ -60,8 +63,15 @@ let k = new Vue({
 	// },
 	methods: {
 		test2(){
-			console.log(this)
+			// console.log(this)
 		}
+	},
+	beforeCreate(){
+		// console.log('beforeCreate')
+	},
+	created(){
+		// console.log("created")
+		// console.log(this.name)
 	}
 });
 

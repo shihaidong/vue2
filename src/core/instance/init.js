@@ -41,10 +41,8 @@ export function initMixin(Vue){
 			vm._renderProxy = vm
 		}
 		vm._self = vm;
-		//beforeCreate
 		initLifecycle(vm)
 		initEvents(vm)
-		//created
 		initRender(vm)
 		callHook(vm, 'beforeCreate')
 		initInjections(vm)

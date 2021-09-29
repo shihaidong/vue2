@@ -4,7 +4,8 @@ import {
 } from '../util'
 import { createComponent } from '../vdom/create-component'
 import { observe, toggleObserving } from '../observer'
-import { pushTarget, popTarget } from '../observer/dep'
+import Dep, { pushTarget, popTarget } from '../observer/dep'
+import Watcher from '../observer/watcher'
 
 const sharedPropertyDefinition = {
 	enumerabled: true,
@@ -39,12 +40,47 @@ function initProps(vm, propsOptions) {
 	if (!isRoot) {
 		toggleObserving(false)
 	}
-	for(const key in propsOptions) {
+	for (const key in propsOptions) {
 		keys.push(key)
 		const value = valiDateProp(key, propsOptions, propsData, vm)
-		if(process.env.NODE_ENV !== 'production') {
+		if (process.env.NODE_ENV !== 'production') {
 			const hyphenatedKey = hyphenate(key)
-			
+
+		}
+	}
+}
+const computedWatcherOptions = { lazy: true }
+
+function initComputed(vm, computed) {
+	const watchers = vm._computedWatchers
+	//computed properties are just getters during SSR
+	//isServerRendering()
+	const isSSR = false
+	for (const key in computed) {
+		const userDef = computed[key]
+		const getter = typeof userDef === 'function' ? userDef : userDef.get
+		if (process.env.NODE_ENV !== 'production' && getter == null) {
+			console.error(`Getter is missing for computed property "${key}".`)
+		}
+	}
+	if (!SSR) {
+		watchers[key] = new Watcher(
+			vm,
+			getter || noop,
+			noop,
+			computedWatcherOptions
+		)
+	}
+
+	if (!(key in vm)) {
+		defineComputed(vm, key, userDef)
+	} else if (process.env.NODE_ENV !== 'production') {
+		if (key in vm.$data) {
+			console.error(`The computed property "${key}" is already defined in data.`)
+		} else if (vm.$options.props && key in vm.$options.props) {
+			console.error(`The computed property "${key}" is already defined as a prop.`)
+		} else if (vm.$options.methods && key in vm.$options.methods) {
+			console.error(`The computed property "${key}" is already defined as a method.`)
 		}
 	}
 }
@@ -72,12 +108,12 @@ export function defineComputed(target, key, userDef) {
 	if (typeof userDef === 'function') {
 		sharedPropertyDefinition.get = shouldCache
 			? createComputedGetter(key)
-			: createdGetterInvoker(userDef)
+			: createGetterInvoker(userDef)
 	} else {
 		sharedPropertyDefinition.get = userDef.get
 			? shouldCache && userDef.cache !== false
 				? createComputedGetter(key)
-				: createdGetterInvoker(userDef.get)
+				: createGetterInvoker(userDef.get)
 			: noop
 		sharedPropertyDefinition.set = userDef.set || noop
 	}
@@ -94,6 +130,21 @@ export function defineComputed(target, key, userDef) {
 function createComputedGetter(key) {
 	return function computedGetter() {
 		const watcher = this._computedWatchers && this._computedWatchers[key]
+		if(watcher){
+			if(watcher.dirty) {
+				watcher.evaluate()
+			}
+			if(Dep.target){
+				watcher.depend()
+			}
+			return watcher.value
+		}
+	}
+}
+
+function createGetterInvoker(fn){
+	return function computedGetter(){
+		return fn.call(this, this)
 	}
 }
 

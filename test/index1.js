@@ -64,6 +64,7 @@ let k = new Vue({
 	methods: {
 		test2(){
 			// console.log(this)
+			console.log('test222')
 		}
 	},
 	beforeCreate(){
@@ -72,6 +73,7 @@ let k = new Vue({
 	created(){
 		// console.log("created")
 		// console.log(this.name)
+		this.test2()
 	}
 });
 

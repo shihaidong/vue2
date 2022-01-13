@@ -27,7 +27,7 @@ export default class VNode {
   // devtoolsMeta: ?Object; // used to store functional render context for devtools
   // fnScopeId: ?string; // functional scope id support
 
-  constructor (
+  constructor(
     tag,
     data,
     children,
@@ -64,7 +64,7 @@ export default class VNode {
 
   // DEPRECATED: alias for componentInstance for backwards compat.
   /* istanbul ignore next */
-  get child () {
+  get child() {
     return this.componentInstance
   }
 }
@@ -76,7 +76,7 @@ export const createEmptyVNode = (text = '') => {
   return node
 }
 
-export function createTextVNode (val) {
+export function createTextVNode(val) {
   return new VNode(undefined, undefined, undefined, String(val))
 }
 

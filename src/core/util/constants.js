@@ -1,8 +1,6 @@
 export const SSR_ATTR = 'data-server-rendered'
 
-export const ASSET_TYPES = [
-	'component', 'directive', 'filter'
-]
+export const ASSET_TYPES = ['component', 'directive', 'filter']
 
 export const LIFECYCLE_HOOKS = [
   'beforeCreate',
@@ -14,7 +12,7 @@ export const LIFECYCLE_HOOKS = [
   'beforeDestroy',
   'destroyed',
   'activated',
-  'deactivated',
+  'deactivated'
   // 'errorCaptured',
   // 'serverPrefetch'
 ]

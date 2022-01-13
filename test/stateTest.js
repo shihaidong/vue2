@@ -10,5 +10,4 @@ let t = {
 
 proxy(t, 'k', 'name')
 
-
 // console.log(t)

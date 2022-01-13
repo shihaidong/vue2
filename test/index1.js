@@ -1,9 +1,8 @@
-test("test/index1")
 import { test } from '../src/core/util/debug'
 import Vue from '../src/core/index'
 import Watcher from '../src/core/observer/watcher'
 import mixin from './mixins'
-test("test/index2")
+test('test/index2')
 // Vue.mixin({
 // 	data(){
 // 		return{
@@ -34,7 +33,7 @@ test("test/index2")
 // Vue.component('Yell', {
 // 	data(){
 // 		return {
-			
+
 // 		}
 // 	}
 // })
@@ -44,43 +43,43 @@ test("test/index2")
 // 	}
 // }, {name: 'shi'})
 let k = new Vue({
-	el:'#app',
-	// mixins: [mixin],
-	data(){
-		return {
-			name: 'shi'
-		}
-	},
-	components:{
-		age:function(){
-			return this.name
-		}
-	},
-	// filters: {
-	// 	// dateAccess(data){
+  el: '#app',
+  // mixins: [mixin],
+  data() {
+    return {
+      name: 'shi'
+    }
+  },
+  components: {
+    age: function () {
+      return this.name
+    }
+  },
+  // filters: {
+  // 	// dateAccess(data){
 
-	// 	// }
-	// },
-	methods: {
-		test2(){
-			// console.log(this)
-			console.log('test222')
-		}
-	},
-	beforeCreate(){
-		// console.log('beforeCreate')
-	},
-	created(){
-		// console.log("created")
-		// console.log(this.name)
-		this.test2()
-	}
-});
+  // 	// }
+  // },
+  methods: {
+    test2() {
+      // console.log(this)
+      console.log('test222')
+    }
+  },
+  beforeCreate() {
+    // console.log('beforeCreate')
+  },
+  created() {
+    // console.log("created")
+    // console.log(this.name)
+    this.test2()
+  }
+})
 
 // let watcher = new Watcher(k, '1$tes11t', function(e){
 // 	// console.log(e)
 // }, {deep: true}, true)
-test("test/index3")
+test('test/index3')
 // k.$options._base.mixin({
 // 	methods:{
 // 		test(){

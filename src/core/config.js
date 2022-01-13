@@ -52,12 +52,12 @@ export default {
    * Check if a tag is reserved so that it cannot be registered as a
    * component. This is platform-dependent and may be overwritten.
    */
-	isReservedTag: no,
+  isReservedTag: no,
   /**
    * Perform updates asynchronously. Intended to be used by Vue Test Utils
    * This will significantly reduce performance if set to false.
    */
-  async: true,
+  async: true
 
   /**
    * Exposed for legacy reasons

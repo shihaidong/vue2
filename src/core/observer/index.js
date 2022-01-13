@@ -1,21 +1,19 @@
 import Dep from './dep'
 import {
-	def,
-	isObject,
-	hasOwn,
-	isPlainObject,
-	isPrimitive,
-	isUndef,
-	isValidArrayIndex,
-	isServerRendering,
+  def,
+  isObject,
+  hasOwn,
+  isPlainObject,
+  isPrimitive,
+  isUndef,
+  isValidArrayIndex,
+  isServerRendering,
   hasProto
-}
-from '../util'
+} from '../util'
 import { arrayMethods } from './array'
 import VNode from '../vdom/vnode'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
-
 
 /**
  * In some cases we may want to disable observation inside a component's
@@ -23,7 +21,7 @@ const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
  */
 export let shouldObserve = true
 
-export function toggleObserving (value) {
+export function toggleObserving(value) {
   shouldObserve = value
 }
 
@@ -38,7 +36,7 @@ export class Observer {
   // dep: Dep;
   // vmCount: number; // number of vms that have this object as root $data
 
-  constructor (value) {
+  constructor(value) {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
@@ -54,13 +52,14 @@ export class Observer {
       this.walk(value)
     }
   }
+
   /**
    * Walk through all properties and convert them into
    * getter/setters. This method should only be called when
    * value type is Object.
    * 只有自身的可枚举属性才会被设置为响应式数据
    */
-  walk (obj) {
+  walk(obj) {
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
       defineReactive(obj, keys[i])
@@ -70,7 +69,7 @@ export class Observer {
   /**
    * Observe a list of Array items.
    */
-  observeArray (items) {
+  observeArray(items) {
     for (let i = 0, l = items.length; i < l; i++) {
       observe(items[i])
     }
@@ -84,27 +83,27 @@ export class Observer {
  * the prototype chain using __proto__
  */
 /**
- * @param {Object} src 
+ * @param {Object} src
  */
-function protoAugment (target, src) {
+function protoAugment(target, src) {
   /* eslint-disable no-proto */
   target.__proto__ = src
   /* eslint-enable no-proto */
 }
 
 /**
- * @param {any} value 
- * @param {asRootData} boolean 
- * @return {Observer | void}  
+ * @param {any} value
+ * @param {asRootData} boolean
+ * @return {Observer | void}
  * 如果传入的是一个对象，则判断是否已经是Observer，直接返回，
  * 如果不是则用该对象实例化Observer再返回
  */
-export function observe (value, asRootData) {
-	//value instanceof VNode
+export function observe(value, asRootData) {
+  // value instanceof VNode
   if (!isObject(value) || value instanceof VNode) {
     return
   }
-  let ob;
+  let ob
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
@@ -123,23 +122,17 @@ export function observe (value, asRootData) {
 }
 
 /**
- * @param {Object} obj 
- * @param {String} key 
- * @param {any} val 
+ * @param {Object} obj
+ * @param {String} key
+ * @param {any} val
  * @param {Function} customSetter?
  * @param {boolean} shallow?
  * Define a reactive property on an Object.
  */
-export function defineReactive (
-  obj,
-  key,
-  val,
-  customSetter,
-  shallow
-) {
+export function defineReactive(obj, key, val, customSetter, shallow) {
   const dep = new Dep()
   const property = Object.getOwnPropertyDescriptor(obj, key)
-	//当前对象为不可属性为不可配置时，不对数据进行劫持
+  // 当前对象为不可属性为不可配置时，不对数据进行劫持
   if (property && property.configurable === false) {
     return
   }
@@ -147,7 +140,7 @@ export function defineReactive (
   // cater for pre-defined getter/setters
   const getter = property && property.get
   const setter = property && property.set
-  //如果getter不存在或者setter存在
+  // 如果getter不存在或者setter存在
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
@@ -155,7 +148,7 @@ export function defineReactive (
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
-    get: function reactiveGetter () {
+    get: function reactiveGetter() {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
         dep.depend()
@@ -168,7 +161,7 @@ export function defineReactive (
       }
       return value
     },
-    set: function reactiveSetter (newVal) {
+    set: function reactiveSetter(newVal) {
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {
@@ -195,35 +188,39 @@ export function defineReactive (
  * Set a property on an object. Adds the new property and
  * triggers change notification if the property doesn't
  * already exist.
- * 
+ *
  * @param {Array | Object} target
  * @param {any} key
  * @param {any} val
- * @return {any}  
+ * @return {any}
  */
-export function set (target, key, val) {
-  if (process.env.NODE_ENV !== 'production' &&
+export function set(target, key, val) {
+  if (
+    process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    console.warn(`Cannot set reactive property on undefined, null, or primitive value: ${(target)}`)
+    console.warn(
+      `Cannot set reactive property on undefined, null, or primitive value: ${target}`
+    )
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key)
     target.splice(key, 1, val)
     return val
   }
-  //如果该property存在直接，则只修改其值
+  // 如果该property存在直接，则只修改其值
   if (key in target && !(key in Object.prototype)) {
     target[key] = val
     return val
   }
-  
-  const ob = (target).__ob__
+
+  const ob = target.__ob__
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && console.error(
-      'Avoid adding reactive properties to a Vue instance or its root $data ' +
-      'at runtime - declare it upfront in the data option.'
-    )
+    process.env.NODE_ENV !== 'production' &&
+      console.error(
+        'Avoid adding reactive properties to a Vue instance or its root $data ' +
+          'at runtime - declare it upfront in the data option.'
+      )
     return val
   }
   if (!ob) {
@@ -238,24 +235,28 @@ export function set (target, key, val) {
 /**
  * Delete a property and trigger change if necessary.
  * @param {Array | Object} target
- * @param {any} key  
+ * @param {any} key
  */
-export function del (target, key) {
-  if (process.env.NODE_ENV !== 'production' &&
+export function del(target, key) {
+  if (
+    process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    console.warn(`Cannot delete reactive property on undefined, null, or primitive value: ${(target)}`)
+    console.warn(
+      `Cannot delete reactive property on undefined, null, or primitive value: ${target}`
+    )
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1)
     return
   }
-  const ob = (target).__ob__
+  const ob = target.__ob__
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== 'production' && console.warn(
-      'Avoid deleting properties on a Vue instance or its root $data ' +
-      '- just set it to null.'
-    )
+    process.env.NODE_ENV !== 'production' &&
+      console.warn(
+        'Avoid deleting properties on a Vue instance or its root $data ' +
+          '- just set it to null.'
+      )
     return
   }
   if (!hasOwn(target, key)) {
@@ -271,9 +272,9 @@ export function del (target, key) {
 /**
  * Collect dependencies on array elements when the array is touched, since
  * we cannot intercept array element access like property getters.
- * @param {Array} value  
+ * @param {Array} value
  */
-function dependArray (value) {
+function dependArray(value) {
   for (let e, i = 0, l = value.length; i < l; i++) {
     e = value[i]
     e && e.__ob__ && e.__ob__.dep.depend()
@@ -282,5 +283,3 @@ function dependArray (value) {
     }
   }
 }
-
-

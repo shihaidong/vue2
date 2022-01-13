@@ -1,1 +1,4 @@
-export { normalizeChildren, simpleNormalizeChildren } from './normalize-children'
+export {
+  normalizeChildren,
+  simpleNormalizeChildren
+} from './normalize-children'

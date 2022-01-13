@@ -1,5 +1,5 @@
 import { extend, isObject } from '../../util'
 
-export function renderSlot(){
+export function renderSlot() {
 
 }

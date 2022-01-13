@@ -1,11 +1,11 @@
 export default {
-  data(){
+  data() {
     return {
       address: 'xzsf'
     }
   },
   methods: {
-    test4(){
+    test4() {
       console.log('test4')
     }
   }

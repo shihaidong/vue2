@@ -1,12 +1,6 @@
-import { 
-  remove,
-  isObject,
-  parsePath,
-  noop 
-} from "../util"
+import { remove, isObject, parsePath, noop } from '../util'
 import { traverse } from './traverse'
-import { pushTarget, popTarget } from "./dep"
-
+import { pushTarget, popTarget } from './dep'
 
 let uid = 0
 
@@ -30,13 +24,7 @@ let uid = 0
   value: any;
  */
 export default class Watcher {
-  constructor (
-    vm,
-    expOrFn,
-    cb,
-    options,
-    isRenderWatcher
-  ) {
+  constructor(vm, expOrFn, cb, options, isRenderWatcher) {
     this.vm = vm
     if (isRenderWatcher) {
       vm._watcher = this
@@ -60,9 +48,8 @@ export default class Watcher {
     this.newDeps = []
     this.depIds = new Set()
     this.newDepIds = new Set()
-    this.expression = process.env.NODE_ENV !== 'production'
-      ? expOrFn.toString()
-      : ''
+    this.expression =
+      process.env.NODE_ENV !== 'production' ? expOrFn.toString() : ''
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
@@ -71,22 +58,21 @@ export default class Watcher {
       // console.log(this.getter)
       if (!this.getter) {
         this.getter = noop
-        process.env.NODE_ENV !== 'production' && console.error(
-          `Failed watching path: "${expOrFn}" ` +
-          'Watcher only accepts simple dot-delimited paths. ' +
-          'For full control, use a function instead.'
-        )
+        process.env.NODE_ENV !== 'production' &&
+          console.error(
+            `Failed watching path: "${expOrFn}" ` +
+              'Watcher only accepts simple dot-delimited paths. ' +
+              'For full control, use a function instead.'
+          )
       }
     }
-    this.value = this.lazy
-      ? undefined
-      : this.get()
+    this.value = this.lazy ? undefined : this.get()
   }
 
   /**
    * Evaluate the getter, and re-collect dependencies.
    */
-  get () {
+  get() {
     pushTarget(this)
     let value
     const vm = this.vm
@@ -94,7 +80,7 @@ export default class Watcher {
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
-        console.log("*****************handleError******************")
+        console.log('*****************handleError******************')
         // handleError(e, vm, `getter for watcher "${this.expression}"`)
       } else {
         throw e
@@ -114,7 +100,7 @@ export default class Watcher {
   /**
    * Add a dependency to this directive.
    */
-  addDep (dep) {
+  addDep(dep) {
     const id = dep.id
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
@@ -128,7 +114,7 @@ export default class Watcher {
   /**
    * Clean up for dependency collection.
    */
-  cleanupDeps () {
+  cleanupDeps() {
     let i = this.deps.length
     while (i--) {
       const dep = this.deps[i]
@@ -150,7 +136,7 @@ export default class Watcher {
    * Subscriber interface.
    * Will be called when a dependency changes.
    */
-  update () {
+  update() {
     /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true
@@ -165,7 +151,7 @@ export default class Watcher {
    * Scheduler job interface.
    * Will be called by the scheduler.
    */
-  run () {
+  run() {
     if (this.active) {
       const value = this.get()
       if (
@@ -182,7 +168,7 @@ export default class Watcher {
         if (this.user) {
           // const info = `callback for watcher "${this.expression}"`
           // invokeWithErrorHandling(this.cb, this.vm, [value, oldValue], this.vm, info)
-          console.log("**************invokedWithErrorHandling*****************")
+          console.log('**************invokedWithErrorHandling*****************')
         } else {
           this.cb.call(this.vm, value, oldValue)
         }
@@ -194,7 +180,7 @@ export default class Watcher {
    * Evaluate the value of the watcher.
    * This only gets called for lazy watchers.
    */
-  evaluate () {
+  evaluate() {
     this.value = this.get()
     this.dirty = false
   }
@@ -202,7 +188,7 @@ export default class Watcher {
   /**
    * Depend on all deps collected by this watcher.
    */
-  depend () {
+  depend() {
     let i = this.deps.length
     while (i--) {
       this.deps[i].depend()
@@ -212,7 +198,7 @@ export default class Watcher {
   /**
    * Remove self from all dependencies' subscriber list.
    */
-  teardown () {
+  teardown() {
     if (this.active) {
       // remove self from vm's watcher list
       // this is a somewhat expensive operation so we skip it

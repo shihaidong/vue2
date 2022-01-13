@@ -1,36 +1,34 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-	entry: {
-		index1: './test/index.js',
-		index2: './test/index1.js',
-		stateTest: './test/stateTest.js',
-		depTest: './test/depTest.js',
-		watcherTest: './test/watcherTest.js',
-		extendTest: './test/extendTest.js'
-	},
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'dist')
-	},
-	mode: 'development',
-	devtool: 'source-map',
-	plugins: [
-		new HtmlWebpackPlugin()
-	],
-	resolve: {
-		alias: {
-			'@' : path.resolve(__dirname, 'src')
-		}
-	},
-	devServer:{
-		port: 4000,
-		open: true
-	},
-	optimization: {
-		runtimeChunk: {
-			name: 'single',
-		},
-	},
+  entry: {
+    index1: './test/index.js',
+    index2: './test/index1.js',
+    stateTest: './test/stateTest.js',
+    depTest: './test/depTest.js',
+    watcherTest: './test/watcherTest.js',
+    extendTest: './test/extendTest.js'
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  mode: 'development',
+  devtool: 'source-map',
+  plugins: [new HtmlWebpackPlugin()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
+  },
+  devServer: {
+    port: 4000,
+    open: true
+  },
+  optimization: {
+    runtimeChunk: {
+      name: 'single'
+    }
+  }
 }

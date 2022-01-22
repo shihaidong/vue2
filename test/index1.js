@@ -4,44 +4,45 @@ import Watcher from '../src/core/observer/watcher'
 import mixin from './mixins'
 test('test/index2')
 // Vue.mixin({
-// 	data(){
-// 		return{
-// 			name: 'shi'
-// 		}
-// 	},
-// 	methods:{
-// 		test1(){
-// 			console.log('nn')
-// 		}
-// 	},
-// 	beforeCreate(){
-// 		console.log("****")
-// 	}
+//   data() {
+//     return {
+//       name: 'shi'
+//     }
+//   },
+//   methods: {
+//     test1() {
+//       console.log('nn')
+//     }
+//   },
+//   beforeCreate() {
+//     console.log('****')
+//   }
 // })
 // Vue.mixin({
-// 	data(){
-// 		return {
-// 			age: 23
-// 		}
-// 	},
-// 	methods:{
-// 		test3(){
-// 			console.log('test3')
-// 		}
-// 	}
+//   data() {
+//     return {
+//       age: 23
+//     }
+//   },
+//   methods: {
+//     test3() {
+//       console.log('test3')
+//     }
+//   }
 // })
 // Vue.component('Yell', {
-// 	data(){
-// 		return {
-
-// 		}
-// 	}
+//   data() {
+//     return {}
+//   }
 // })
-// Vue.use({
-// 	install(Vue,options){
-// 		console.log(arguments)
-// 	}
-// }, {name: 'shi'})
+// Vue.use(
+//   {
+//     install(Vue, options) {
+//       console.log(arguments)
+//     }
+//   },
+//   { name: 'shi' }
+// )
 let k = new Vue({
   el: '#app',
   // mixins: [mixin],
@@ -56,9 +57,8 @@ let k = new Vue({
     }
   },
   // filters: {
-  // 	// dateAccess(data){
-
-  // 	// }
+  //   // dateAccess(data){
+  //   // }
   // },
   methods: {
     test2() {
@@ -76,23 +76,29 @@ let k = new Vue({
   }
 })
 
-// let watcher = new Watcher(k, '1$tes11t', function(e){
-// 	// console.log(e)
-// }, {deep: true}, true)
+// let watcher = new Watcher(
+//   k,
+//   '1$tes11t',
+//   function (e) {
+//     // console.log(e)
+//   },
+//   { deep: true },
+//   true
+// )
 test('test/index3')
 // k.$options._base.mixin({
-// 	methods:{
-// 		test(){
-// 			console.log('test')
-// 		}
-// 	}
+//   methods: {
+//     test() {
+//       console.log('test')
+//     }
+//   }
 // })
 
 // let useObj = {
-// 	install(Vue){
-// 		console.log("***",this,arguments)
-// 	}
+//   install(Vue) {
+//     console.log('***', this, arguments)
+//   }
 // }
-// k.$options._base.use(useObj, {edit: true})
+// k.$options._base.use(useObj, { edit: true })
 
 console.log(k)

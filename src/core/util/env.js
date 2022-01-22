@@ -3,7 +3,7 @@ export const hasProto = '__proto__' in {}
 
 // 判断浏览器环境
 
-export const inBrowser = typeof window !== undefined
+export const inBrowser = typeof window !== 'undefined'
 
 // Firefox has a 'watch' function on Object prototype
 export const nativeWatch = {}.watch

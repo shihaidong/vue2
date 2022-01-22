@@ -4,6 +4,8 @@
 import { test, invokeWithErrorHandling } from '../util'
 import { pushTarget, popTarget } from '../observer/dep'
 test('core/instance/lifecycle1')
+
+export const isUpdatingChildComponent = false
 export function initLifecycle(vm) {
   test('core/instance/lifecycle2')
   const options = vm.$options

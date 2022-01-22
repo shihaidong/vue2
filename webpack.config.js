@@ -8,7 +8,8 @@ module.exports = {
     stateTest: './test/stateTest.js',
     depTest: './test/depTest.js',
     watcherTest: './test/watcherTest.js',
-    extendTest: './test/extendTest.js'
+    extendTest: './test/extendTest.js',
+    prop: './test/props.js'
   },
   output: {
     filename: '[name].js',

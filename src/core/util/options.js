@@ -16,7 +16,7 @@ import { ASSET_TYPES, LIFECYCLE_HOOKS } from './constants'
 // Object.create(null)
 const strats = config.optionMergeStrategies
 
-if (process.env.NODE_ENV != 'production') {
+if (process.env.NODE_ENV !== 'production') {
   strats.el = strats.propsData = function (parent, child, vm, key) {
     if (!vm) {
       console.error(
@@ -52,14 +52,14 @@ strats.data = function (parentVal, childVal, vm, key) {
  * @param {Function} childVal
  * @param {*} vm
  * parentVal = function(){
- * 	return {
- * 		name: 'shi'
- * 	}
+ *  return {
+ *    name: 'shi'
+ *  }
  * }
  * childVal = function(){
- * 	return {
- * 		age: 32
- * 	}
+ *  return {
+ *    age: 32
+ *  }
  * }
  */
 export function mergeDataOrFn(parentVal, childVal, vm) {
@@ -120,7 +120,7 @@ function mergeData(to, from) {
   return to
 }
 
-LIFECYCLE_HOOKS.forEach((hook) => {
+LIFECYCLE_HOOKS.forEach(hook => {
   strats[hook] = mergeHook
 })
 /**
@@ -134,8 +134,8 @@ function mergeHook(parentVal, childVal) {
     ? parentVal
       ? parentVal.concat(childVal)
       : Array.isArray(childVal)
-        ? childVal
-        : [childVal]
+      ? childVal
+      : [childVal]
     : parentVal
   return res ? dedupeHooks(res) : res
 }
@@ -192,8 +192,8 @@ strats.watch = function (parentVal, childVal, vm, key) {
     ret[key] = parent
       ? parent.concat(child)
       : Array.isArray(child)
-        ? child
-        : [child]
+      ? child
+      : [child]
   }
   return ret
 }
@@ -260,7 +260,7 @@ export function mergeOptions(parent, child, vm) {
     // 检查所有注册在该vue实例上的组件名称是否‘合法’
     checkComponents(child)
   }
-  if (typeof child === 'functoin') {
+  if (typeof child === 'function') {
     child = child.options
   }
   // 用于vuecomponent
@@ -310,7 +310,6 @@ export function mergeOptions(parent, child, vm) {
 function normalizeProps(options, vm) {
   const props = options.props
   if (!props) return
-  console.log('props')
   const res = {}
   let i, val, name
   if (Array.isArray(props)) {
@@ -342,7 +341,6 @@ function normalizeProps(options, vm) {
 function normalizeInject(options, vm) {
   const inject = options.inject
   if (!inject) return
-  console.log('inject')
   const normalized = (options.inject = {})
   if (Array.isArray(inject)) {
     for (let i = 0; i < inject.length; i++) {
@@ -355,7 +353,7 @@ function normalizeInject(options, vm) {
         ? extend({ from: key }, val)
         : { from: key }
     }
-  } else if (process.env.NODE_ENV !== production) {
+  } else if (process.env.NODE_ENV !== 'production') {
     console.error(
       'Invalid value for option "inject": expected an Array or an Object, ' +
         `but got ${toRawType(inject)}.`
@@ -365,7 +363,6 @@ function normalizeInject(options, vm) {
 function normalizeDirectives(options) {
   const dirs = options.directives
   if (dirs) {
-    console.log('directive')
     for (const key in dirs) {
       const def = dirs[key]
       if (typeof def === 'function') {

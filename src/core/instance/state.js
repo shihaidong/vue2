@@ -6,15 +6,19 @@ import {
   isReserved,
   bind,
   isPlainObject,
-  hyphenate
+  hyphenate,
+  validateProp,
+  nativeWatch,
+  defineReactive
 } from '../util'
+import { isUpdatingChildComponent } from './lifecycle'
 import { createComponent } from '../vdom/create-component'
 import { observe, toggleObserving } from '../observer'
 import Dep, { pushTarget, popTarget } from '../observer/dep'
 import Watcher from '../observer/watcher'
 
 const sharedPropertyDefinition = {
-  enumerabled: true,
+  enumerable: true,
   configurable: true,
   get: noop,
   set: noop
@@ -48,11 +52,22 @@ function initProps(vm, propsOptions) {
   }
   for (const key in propsOptions) {
     keys.push(key)
-    const value = valiDateProp(key, propsOptions, propsData, vm)
+    const value = validateProp(key, propsOptions, propsData, vm)
     if (process.env.NODE_ENV !== 'production') {
       const hyphenatedKey = hyphenate(key)
+      defineReactive(props, key, value, () => {
+        if (!isRoot && !isUpdatingChildComponent) {
+          console.warn('避免在组件内部修改props')
+        }
+      })
+    } else {
+      defineReactive(props, key, value)
+    }
+    if (!(key in vm)) {
+      proxy(vm, '_props', key)
     }
   }
+  toggleObserving(true)
 }
 const computedWatcherOptions = { lazy: true }
 
@@ -101,6 +116,7 @@ function initComputed(vm, computed) {
  * @param {Object} target
  * @param {string} sourceKey
  * @param {string} key
+ * @description 将sourceKey下的key代理到target下
  */
 export function proxy(target, sourceKey, key) {
   sharedPropertyDefinition.get = function proxyGetter() {

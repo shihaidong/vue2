@@ -34,6 +34,7 @@ export function initMixin(Vue) {
         options || {},
         vm
       )
+      console.log(vm.constructor.options)
     }
     if (process.env.NODE_ENV !== 'production') {
       // initProxy(vm)
@@ -41,14 +42,14 @@ export function initMixin(Vue) {
       vm._renderProxy = vm
     }
     vm._self = vm
-    initLifecycle(vm)
-    initEvents(vm)
-    initRender(vm)
-    callHook(vm, 'beforeCreate')
-    initInjections(vm)
-    initState(vm)
-    initProvide(vm)
-    callHook(vm, 'created')
+    // initLifecycle(vm)
+    // initEvents(vm)
+    // initRender(vm)
+    // callHook(vm, 'beforeCreate')
+    // initInjections(vm)
+    // initState(vm)
+    // initProvide(vm)
+    // callHook(vm, 'created')
 
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       // vm._name = formatComponentName(vm, false)
@@ -58,7 +59,7 @@ export function initMixin(Vue) {
     }
 
     // if (vm.$options.el) {
-    // 	// vm.$mount(vm.$options.el)
+    //  vm.$mount(vm.$options.el)
     // }
     test('core/instance/init5')
   }

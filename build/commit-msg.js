@@ -1,3 +1,3 @@
 console.log('commit-msg')
 console.log(process.env)
-process.exit(1)
+process.exit(0)

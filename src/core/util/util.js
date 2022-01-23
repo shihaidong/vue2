@@ -38,7 +38,7 @@ const _toString = Object.prototype.toString
  * output = 'Array'
  */
 export function toRawType(val) {
-  return _toString.call(value).slice(8, -1)
+  return _toString.call(val).slice(8, -1)
 }
 
 /**
@@ -56,7 +56,13 @@ export function isValidArrayIndex(val) {
   const n = parseFloat(String(val))
   return n >= 0 && Math.floor(n) === n && isFinite(val)
 }
-
+export function isPromise(val) {
+  return (
+    isDef(val) &&
+    typeof val.then === 'function' &&
+    typeof val.catch === 'function'
+  )
+}
 /**
  * check whether a object has the prototype;
  * @param {Object} obj
@@ -80,7 +86,7 @@ export function cached(fn) {
  * output = 'backgroundColor'
  */
 const camelizeRE = /-(\w)/g
-export const camelize = cached((str) => {
+export const camelize = cached(str => {
   return str.replace(camelizeRE, (_, c) => (c ? c.toUpperCase() : ''))
 })
 
@@ -90,7 +96,7 @@ export const camelize = cached((str) => {
  * output = 'background-color'
  */
 const hyphenateRE = /\B([A-Z])/g
-export const hyphenate = cached((str) => {
+export const hyphenate = cached(str => {
   return str.replace(hyphenateRE, '-$1').toLowerCase()
 })
 /**
@@ -119,7 +125,7 @@ export function makeMap(str, expectsLowerCase) {
   for (let i = 0; i < list.length; i++) {
     map[list[i]] = true
   }
-  return expectsLowerCase ? (val) => map[val.toLowerCase()] : (val) => map[val]
+  return expectsLowerCase ? val => map[val.toLowerCase()] : val => map[val]
 }
 
 /**
@@ -147,7 +153,7 @@ export function extend(to, _from) {
  * @param {number} start
  * @return {Array}
  * input [1,2,3,4,5]
- *		-> toArray(list, 2)
+ *  -> toArray(list, 2)
  * output [3,4,5]
  */
 export function toArray(list, start) {

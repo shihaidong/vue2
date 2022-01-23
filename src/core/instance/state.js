@@ -13,7 +13,7 @@ import {
 } from '../util'
 import { isUpdatingChildComponent } from './lifecycle'
 import { createComponent } from '../vdom/create-component'
-import { observe, toggleObserving } from '../observer'
+import { observe, toggleObserving, set, del } from '../observer'
 import Dep, { pushTarget, popTarget } from '../observer/dep'
 import Watcher from '../observer/watcher'
 
@@ -258,4 +258,31 @@ export function getData(data, vm) {
   } finally {
     popTarget()
   }
+}
+
+export function stateMixin(Vue) {
+  const dataDef = {}
+  dataDef.get = function () {
+    return this._data
+  }
+  const propsDef = {}
+  propsDef.get = function () {
+    return this._props
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    dataDef.set = function () {
+      console.warn(
+        'Avoid replacing instance root $data. ' +
+          'Use nested data properties instead.'
+      )
+    }
+    propsDef.set = function () {
+      console.warn('$props is readonly.')
+    }
+  }
+  Object.defineProperty(Vue.prototype, '$data', dataDef)
+  Object.defineProperty(Vue.prototype, '$props', propsDef)
+
+  Vue.prototype.$set = set
+  Vue.prototype.$delete = del
 }

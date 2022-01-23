@@ -1,5 +1,8 @@
+import { invokeWithErrorHandling, toArray } from '../util'
+// 所有event会被注册到当前实例的_events数组中
 export function initEvents(vm) {
   vm._events = Object.create(null)
+  //  当有@hook:<hook>时会被置为true
   vm._hasHookEvent = false
   // init parent attached events
   const listeners = vm.$options._parentListeners
@@ -106,5 +109,23 @@ export function eventsMixin(Vue) {
     return vm
   }
 
-  Vue.prototype.$emit = function (event) {}
+  Vue.prototype.$emit = function (event) {
+    const vm = this
+    if (process.env.NODE_ENV !== 'production') {
+      const lowerCaseEvent = event.toLowerCase()
+      if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
+        console.log('**')
+      }
+    }
+    let cbs = vm._events[event]
+    if (cbs) {
+      cbs = cbs.length > 1 ? toArray(cbs) : cbs
+      const args = toArray(arguments, 1)
+      const info = `event handler for "${event}"`
+      for (let i = 0, l = cbs.length; i < l; i++) {
+        invokeWithErrorHandling(cbs[i], vm, args, vm, info)
+      }
+    }
+    return vm
+  }
 }

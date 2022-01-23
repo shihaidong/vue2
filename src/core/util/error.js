@@ -1,5 +1,5 @@
 import { pushTarget, popTarget } from '../observer/dep'
-
+import { isPromise } from './util'
 export function handleError(err, vm, info) {
   pushTarget()
   try {
@@ -29,7 +29,7 @@ export function invokeWithErrorHandling(handler, context, args, vm, info) {
   try {
     res = args ? handler.apply(context, args) : handler.call(context)
     if (res && !res._isVue && isPromise(res) && !res._handled) {
-      res.catch((e) => handleError(e, vm, info + '(Promise/async)'))
+      res.catch(e => handleError(e, vm, info + '(Promise/async)'))
       res._handled = true
     }
   } catch (e) {

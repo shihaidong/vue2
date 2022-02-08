@@ -16,7 +16,7 @@ const SIMPLE_NORMALIZE = 1
 const ALWAYS_NORMALIZE = 2
 
 /**
- * this.$createElement = (vm, a, b, c, d, true)
+ * vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
  * @param {Component} context                 | vm
  * @param {any} tag                           | a
  * @param {any} data                          | b
@@ -109,7 +109,8 @@ export function _createElement(
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
-    console.log(ns)
+    // undefined
+    console.log(ns, config.isReservedTag(tag))
     if (config.isReservedTag(tag)) {
       if (
         process.env.NODE_ENV !== 'production' &&
@@ -121,7 +122,6 @@ export function _createElement(
           `The .native modifier for v-on is only valid on components but it was used on <${tag}>.`
         )
       }
-
       vnode = new VNode(
         config.parsePlatformTagName(tag),
         data,
@@ -137,7 +137,6 @@ export function _createElement(
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
       vnode = new VNode(tag, data, children, undefined, undefined, context)
-      console.log('**')
     }
   } else {
     vnode = createComponent(tag, data, context, children)

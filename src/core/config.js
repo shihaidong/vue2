@@ -1,4 +1,4 @@
-import { no, noop } from './util/util.js'
+import { no, noop, identity } from './util/util.js'
 export default {
   /**
    * get the namespace of an element
@@ -51,7 +51,10 @@ export default {
    */
   // $flow-disable-line
   keyCodes: Object.create(null),
-
+  /**
+   * parse the real tag name for the specific platform.
+   */
+  parsePlatformTagName: identity,
   /**
    * Check if a tag is reserved so that it cannot be registered as a
    * component. This is platform-dependent and may be overwritten.

@@ -34,7 +34,6 @@ function isTextNode(node) {
  * @returns {Array<VNode>}
  */
 function normalizeArrayChildren(children, nestedIndex) {
-  console.log('normalize')
   const res = []
   let i, c, lastIndex, last
   for (i = 0; i < children.length; i++) {
@@ -54,7 +53,7 @@ function normalizeArrayChildren(children, nestedIndex) {
       }
     } else if (isPrimitive(c)) {
       if (isTextNode(last)) {
-        res[lastIndex] = createTextVnode(last.text + c)
+        res[lastIndex] = createTextVNode(last.text + c)
       } else if (c !== '') {
         res.push(createTextVNode(c))
       }

@@ -139,6 +139,9 @@ export function makeMap(str, expectsLowerCase) {
 
 export const isBuiltInTag = makeMap('slot,component', true)
 
+/**
+ * Alowys return false
+ */
 export const no = (a, b, c) => false
 
 /**
@@ -198,3 +201,5 @@ function nativeBind(fn, ctx) {
 export const bind = Function.prototype.bind ? nativeBind : polyfillBind
 
 export function noop(a, b, c) {}
+
+export const identity = _ => _

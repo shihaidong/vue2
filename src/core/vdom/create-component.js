@@ -70,6 +70,8 @@ export function createComponent(Ctor, data, context, children, tag) {
     return
   }
   const baseCtor = context.$options._base
+
+  // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
   }
@@ -127,7 +129,7 @@ export function createComponent(Ctor, data, context, children, tag) {
     { Ctor, propsData, listeners, tag, children },
     asyncFactory
   )
-  // 微信端处理方式省略
+  // 此处有省略代码
   return vnode
 }
 

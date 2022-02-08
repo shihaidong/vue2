@@ -1,7 +1,7 @@
 import Vue from '../../src/core'
-import { createComponent as h } from '../../src/core/vdom/create-component'
+import { createElement as h } from '../../src/core/vdom/create-element'
 import { VueCtor } from './createElementTest'
-let ComponentTest = {
+const vueInstance = new Vue({
   name: 'shi',
   template: '<div>testExtend</div>',
   data() {
@@ -9,14 +9,17 @@ let ComponentTest = {
       name: 'shihaidong'
     }
   },
+  components: {
+    VueCtor
+  },
   methods: {
     getName() {
       return this.name
     }
   }
-}
+})
 
-const Ctor = Vue.extend(ComponentTest)
-console.log(VueCtor)
-const k = h(new Ctor(), {}, VueCtor)
+// const k = h(vueInstance, 'VueCtor', {}, 'shi', 2)
+// const k = h(vueInstance, VueCtor, {}, 'shi')
+const k = h(vueInstance, VueCtor, {})
 console.log(k)

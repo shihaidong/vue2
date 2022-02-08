@@ -9,7 +9,8 @@ import {
   hyphenate,
   validateProp,
   nativeWatch,
-  defineReactive
+  defineReactive,
+  invokeWithErrorHandling
 } from '../util'
 import { isUpdatingChildComponent } from './lifecycle'
 import { createComponent } from '../vdom/create-component'
@@ -285,4 +286,34 @@ export function stateMixin(Vue) {
 
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
+
+  Vue.prototype.$watch = function (expOrFn, cb, options) {
+    const vm = this
+    if (isPlainObject(cb)) {
+      return createWatcher(vm, expOrFn, cb, options)
+    }
+    options = options || {}
+    options.user = true
+    const watcher = new Watcher(vm, expOrFn, cb, options)
+    if (options.immediate) {
+      const info = `callback for immediate watcher "${watcher.expression}`
+      pushTarget()
+      invokeWithErrorHandling(cb, vm, [watcher.value], vm, info)
+      popTarget()
+    }
+    return function unwatchFn() {
+      watcher.teardown()
+    }
+  }
+}
+
+function createWatcher(vm, expOrFn, handler, options) {
+  if (isPlainObject(handler)) {
+    options = handler
+    handler = handler.handler
+  }
+  if (typeof handler === 'string') {
+    handler = vm[handler]
+  }
+  return vm.$watch(expOrFn, handler, options)
 }

@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { DefinePlugin } = require('webpack')
 
 module.exports = {
   entry: {
@@ -9,7 +10,9 @@ module.exports = {
     depTest: './test/depTest.js',
     watcherTest: './test/watcherTest.js',
     extendTest: './test/extendTest.js',
-    prop: './test/props.js'
+    prop: './test/props.js',
+    createElementTest: './test/vdom/createElementTest.js',
+    createComponentTest: './test/vdom/createComponentTest.js'
   },
   output: {
     filename: '[name].js',
@@ -17,7 +20,7 @@ module.exports = {
   },
   mode: 'development',
   devtool: 'source-map',
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [new HtmlWebpackPlugin(), new DefinePlugin({ __WEEX__: true })],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')

@@ -70,7 +70,7 @@ export function initMixin(Vue) {
  * @test input { name: 'shi', age: 32, super: k}
  */
 
-function resolveConstructorOptions(Ctor) {
+export function resolveConstructorOptions(Ctor) {
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)

@@ -7,7 +7,8 @@ import {
   isPlainObject,
   extend,
   toRawType,
-  camelize
+  camelize,
+  capitalize
 } from './util'
 import { set } from '../observer'
 
@@ -379,7 +380,7 @@ export function resolveAsset(options, type, id, warnMissing) {
   const assets = options[type]
   // check local registration variations first
   if (hasOwn(assets, id)) return assets[id]
-  const camelizedId = camelized(id)
+  const camelizedId = camelize(id)
   if (hasOwn(assets, camelizedId)) return assets[camelizedId]
   const PascalCaseId = capitalize(camelizedId)
   if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]

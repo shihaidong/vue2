@@ -19,8 +19,8 @@ export function normalizeChildren(children) {
   return isPrimitive(children)
     ? [createTextVNode(children)]
     : Array.isArray(children)
-      ? normalizeArrayChildren(children)
-      : undefined
+    ? normalizeArrayChildren(children)
+    : undefined
 }
 
 function isTextNode(node) {
@@ -34,6 +34,7 @@ function isTextNode(node) {
  * @returns {Array<VNode>}
  */
 function normalizeArrayChildren(children, nestedIndex) {
+  console.log('normalize')
   const res = []
   let i, c, lastIndex, last
   for (i = 0; i < children.length; i++) {
@@ -46,7 +47,7 @@ function normalizeArrayChildren(children, nestedIndex) {
       if (c.length > 0) {
         c = normalizeArrayChildren(c, `${nestedIndex || ''}_${i}`)
         if (isTextNode(c[0]) && isTextNode(last)) {
-          res[lastIndex] = createTextVNode(last.text + (c[0]).text)
+          res[lastIndex] = createTextVNode(last.text + c[0].text)
           c.shift()
         }
         res.push.apply(res, c)
@@ -61,10 +62,12 @@ function normalizeArrayChildren(children, nestedIndex) {
       if (isTextNode(c) && isTextNode(last)) {
         res[lastIndex] = createTextVNode(last.text + c.text)
       } else {
-        if (isTrue(children._isVList) &&
+        if (
+          isTrue(children._isVList) &&
           isDef(c.tag) &&
           isUndef(c.key) &&
-          isDef(nestedIndex)) {
+          isDef(nestedIndex)
+        ) {
           c.key = `__vlist${nestedIndex}_${i}__`
         }
         res.push(c)

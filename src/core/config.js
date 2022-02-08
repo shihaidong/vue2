@@ -1,5 +1,9 @@
-import { no } from './util/util.js'
+import { no, noop } from './util/util.js'
 export default {
+  /**
+   * get the namespace of an element
+   */
+  getTagNamespace: noop,
   isTest: false,
   /**
    * Option merge strategies (used in core/util/options)
@@ -58,7 +62,6 @@ export default {
    * This will significantly reduce performance if set to false.
    */
   async: true
-
   /**
    * Exposed for legacy reasons
    */

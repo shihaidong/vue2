@@ -20,4 +20,4 @@ let k = Vue.extend({
 //   },
 // })
 let ins = new k()
-console.log(ins)
+// console.log(ins)

@@ -1,7 +1,14 @@
 import config from '../config'
 import VNode, { createEmptyVNode } from './vnode'
 import { createComponent } from './create-component'
-import { isPrimitive, isTrue, isDef, isUndef, isObject } from '../util'
+import {
+  isPrimitive,
+  isTrue,
+  isDef,
+  isUndef,
+  isObject,
+  resolveAsset
+} from '../util'
 import { traverse } from '../observer/traverse'
 
 import { normalizeChildren, simpleNormalizeChildren } from './helpers/index'
@@ -9,12 +16,13 @@ const SIMPLE_NORMALIZE = 1
 const ALWAYS_NORMALIZE = 2
 
 /**
- * @param {Component} context
- * @param {any} tag
- * @param {any} data
- * @param {any} children
- * @param {any} normalizationType
- * @param {boolean} alwaysNormalize
+ * this.$createElement = (vm, a, b, c, d, true)
+ * @param {Component} context                 | vm
+ * @param {any} tag                           | a
+ * @param {any} data                          | b
+ * @param {any} children                      | c
+ * @param {any} normalizationType             | d
+ * @param {boolean} alwaysNormalize           | true
  * @returns {Vnode | Array<VNode>}
  */
 export function createElement(
@@ -25,6 +33,14 @@ export function createElement(
   normalizationType,
   alwaysNormalize
 ) {
+  /**
+   * <div>
+   *  <h1 class="title">title</h1>
+   *  <p>this is content</p>
+   * </div>
+   * createElement(vm, 'div', [createElement(vm, {class:{title: true}}, 'title'), createElement(vm, 'p', 'this is content')])
+   */
+  // 如果第二个参数不是对象，是一个数组或者javascript基本数据类型，则认为该标签不包含data
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -68,6 +84,7 @@ export function _createElement(
     isDef(data.key) &&
     !isPrimitive(data.key)
   ) {
+    /* eslint-disable no-undef */
     if (!__WEEX__ || !('@binding' in data.key)) {
       console.error(
         'Avoid using non-primitive value as key, ' +
@@ -84,13 +101,15 @@ export function _createElement(
 
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)
+    console.log('createelement', children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {
-    children = simpleNormalizeChildren(child)
+    children = simpleNormalizeChildren(children)
   }
   let vnode, ns
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
+    console.log(ns)
     if (config.isReservedTag(tag)) {
       if (
         process.env.NODE_ENV !== 'production' &&
@@ -102,6 +121,7 @@ export function _createElement(
           `The .native modifier for v-on is only valid on components but it was used on <${tag}>.`
         )
       }
+
       vnode = new VNode(
         config.parsePlatformTagName(tag),
         data,
@@ -117,6 +137,7 @@ export function _createElement(
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
       vnode = new VNode(tag, data, children, undefined, undefined, context)
+      console.log('**')
     }
   } else {
     vnode = createComponent(tag, data, context, children)

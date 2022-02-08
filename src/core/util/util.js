@@ -80,7 +80,12 @@ export function cached(fn) {
     return hit || (cache[str] = fn(str))
   }
 }
-
+/**
+ * Capitalize a string
+ */
+export const capitalize = cached(str => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+})
 /**
  * str = 'background-color'
  * output = 'backgroundColor'

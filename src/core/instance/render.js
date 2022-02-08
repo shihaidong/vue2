@@ -53,3 +53,5 @@ export function initRender(vm) {
     )
   }
 }
+
+export let currentRenderingInstance = null

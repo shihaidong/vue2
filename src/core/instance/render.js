@@ -1,5 +1,6 @@
 import { emptyObject, defineReactive } from '../util'
 import { createElement } from '../vdom/create-element'
+import VNode, { createEmptyVNode } from '../vdom/vnode'
 import { resolveSlots } from './render-helpers/resolve-slots'
 
 export function initRender(vm) {
@@ -55,3 +56,55 @@ export function initRender(vm) {
 }
 
 export let currentRenderingInstance = null
+
+// for testing only
+export function setCurrentRenderingInstance(vm) {
+  currentRenderingInstance = vm
+}
+
+export function renderMixin(Vue) {
+  // installRenderHelper(Vue.prototype)
+
+  Vue.prototype.$nextTick = function (fn) {
+    return nextTick(fn, this)
+  }
+
+  Vue.prototype._render = function () {
+    const vm = this
+    const { render, _parentVnode } = vm.$options
+
+    if (_parentVnode) {
+      vm.$scopedSlots = normalizeScopedSlots(
+        _parentVnode.data.scopedSlots,
+        vm.$slots,
+        vm.$scopedSlots
+      )
+    }
+
+    vm.$vnode = _parentVnode
+
+    let vnode
+    try {
+      currentRenderingInstance = vm
+      // render函数的回调为h
+      vnode = render.call(vm._renderProxy, vm.$createElement)
+    } catch (e) {
+      // 假设不会出现异常
+      console.log('instance/render.js')
+    } finally {
+      currentRenderingInstance = null
+    }
+
+    if (Array.isArray(vnode) && vnode.length === 1) {
+      vnode = vnode[0]
+    }
+    if (!(vnode instanceof VNode)) {
+      if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
+        console.error('有且只能有一个根节点')
+      }
+      vnode = createEmptyVNode()
+    }
+    vnode.parent = _parentVnode
+    return vnode
+  }
+}

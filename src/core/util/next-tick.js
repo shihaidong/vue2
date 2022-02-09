@@ -50,3 +50,29 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
     setTimeout(flushCallbacks, 0)
   }
 }
+
+export function nextTick(cb, ctx) {
+  let _resolve
+  callbacks.push(() => {
+    if (cb) {
+      try {
+        cb.call(ctx)
+      } catch (e) {
+        console.error('util/next-tick')
+      }
+    } else if (_resolve) {
+      _resolve(ctx)
+    }
+  })
+
+  if (!pending) {
+    pending = true
+    timerFunc()
+  }
+
+  if (!cb && typeof Promise !== 'undefined') {
+    return new Promise(resolve => {
+      _resolve = resolve
+    })
+  }
+}

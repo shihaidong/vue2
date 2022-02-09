@@ -1,7 +1,8 @@
-import { emptyObject, defineReactive } from '../util'
+import { emptyObject, defineReactive, nextTick } from '../util'
 import { createElement } from '../vdom/create-element'
 import VNode, { createEmptyVNode } from '../vdom/vnode'
 import { resolveSlots } from './render-helpers/resolve-slots'
+import { normalizeScopedSlots } from '../vdom/helpers/normalize-scoped-slots'
 
 export function initRender(vm) {
   vm._vnode = null // the root of the child tree

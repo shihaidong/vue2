@@ -1,8 +1,18 @@
 /**
  * @param {Component} vm
  */
-import { test, invokeWithErrorHandling, remove } from '../util'
+import {
+  test,
+  invokeWithErrorHandling,
+  remove,
+  mark,
+  measure,
+  noop
+} from '../util'
 import { pushTarget, popTarget } from '../observer/dep'
+import { createEmptyVNode } from '../vdom/vnode'
+import config from '../config'
+import Watcher from '../observer/watcher'
 test('core/instance/lifecycle1')
 export let activeInstance = null
 export const isUpdatingChildComponent = false
@@ -103,4 +113,76 @@ export function lifecycleMixin(Vue) {
       remove(parent.$children, vm)
     }
   }
+}
+
+export function mountComponent(vm, el, hydrating) {
+  vm.$el = el
+  if (!vm.$options.render) {
+    vm.$options.render = createEmptyVNode
+    if (process.env.NODE_ENV !== 'production') {
+      if (
+        (vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
+        vm.$options.el ||
+        el
+      ) {
+        console.warn(
+          'you are using the runtime-only build of Vue where the template compiler is not available. either pre-compile the templates into render function, or use the compiler-included build'
+        )
+      } else {
+        console.wrrn(
+          'Failed to mount component: template or render function not defined'
+        )
+      }
+    }
+  }
+  callHook(vm, 'beforeMount')
+
+  let updateComponent
+  // 如果是非生产环境则获取加载所需时间
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    updateComponent = () => {
+      const name = vm._name
+      const id = vm._uid
+      const startTag = `vue-perf-start:${id}`
+      const endTag = `vue-perf-end:${id}`
+
+      mark(startTag)
+      const vnode = vm._render()
+      mark(endTag)
+      measure(`vue ${name} render`, startTag, endTag)
+
+      mark(startTag)
+      vm._update(vnode, hydrating)
+      mark(endTag)
+      measure(`vue ${name} patch`, startTag, endTag)
+    }
+  } else {
+    updateComponent = () => {
+      vm._update(vm._render(), hydrating)
+    }
+  }
+
+  // eslint-disable-next-line no-new
+  new Watcher(
+    vm,
+    updateComponent,
+    noop,
+    {
+      before() {
+        if (vm._isMounted && !vm._isDestroyed) {
+          callHook(vm, 'beforeUpdate')
+        }
+      }
+    },
+    true
+  )
+
+  hydrating = false
+
+  if (vm.$vnode == null) {
+    vm._isMounted = true
+    callHook(vm, 'mounted')
+  }
+
+  return vm
 }

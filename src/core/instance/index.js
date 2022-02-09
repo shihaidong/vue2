@@ -2,6 +2,8 @@ import { test } from '../util'
 import { initMixin } from './init'
 import { stateMixin } from './state'
 import { eventsMixin } from './events'
+import { lifecycleMixin } from './lifecycle'
+import { renderMixin } from './render'
 test('core/instance/index1')
 test('core/instance/index2')
 function Vue(options) {
@@ -16,6 +18,8 @@ function Vue(options) {
 initMixin(Vue)
 stateMixin(Vue)
 eventsMixin(Vue)
+lifecycleMixin(Vue)
+renderMixin(Vue)
 test('core/instance/index3')
 
 export default Vue

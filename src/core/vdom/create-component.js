@@ -70,7 +70,6 @@ export function createComponent(Ctor, data, context, children, tag) {
     return
   }
   const baseCtor = context.$options._base
-
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
@@ -82,7 +81,6 @@ export function createComponent(Ctor, data, context, children, tag) {
     }
     return
   }
-
   let asyncFactory
   if (isUndef(Ctor.cid)) {
     asyncFactory = Ctor

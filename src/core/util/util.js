@@ -73,6 +73,9 @@ export function hasOwn(obj, key) {
   return hasOwnProperty.call(obj, key)
 }
 
+export function isRegexp(obj) {
+  return _toString.call(obj) === '[object RegExp]'
+}
 export function cached(fn) {
   const cache = Object.create(null)
   return function cachedFn(str) {

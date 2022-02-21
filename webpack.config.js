@@ -23,7 +23,8 @@ module.exports = {
   plugins: [new HtmlWebpackPlugin(), new DefinePlugin({ __WEEX__: true })],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src'),
+      shared: path.resolve(__dirname, 'src/core/util')
     }
   },
   devServer: {

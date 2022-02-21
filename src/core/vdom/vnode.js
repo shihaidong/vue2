@@ -80,7 +80,7 @@ export function createTextVNode(val) {
   return new VNode(undefined, undefined, undefined, String(val))
 }
 
-export function clondVNode(vnode) {
+export function cloneVNode(vnode) {
   const cloned = new VNode(
     vnode.tag,
     vnode.data,

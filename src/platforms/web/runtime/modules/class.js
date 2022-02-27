@@ -1,4 +1,4 @@
-import { isDef, isUndef } from 'shared/util'
+import { isDef, isUndef } from '../../../../core/util'
 import { concat, genClassForVnode, stringifyClass } from '../../util/class'
 
 function updateClass(oldVnode, vnode) {

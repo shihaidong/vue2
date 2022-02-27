@@ -24,6 +24,7 @@ const ALWAYS_NORMALIZE = 2
  * @param {any} normalizationType             | d
  * @param {boolean} alwaysNormalize           | true
  * @returns {Vnode | Array<VNode>}
+ * 根据tag创建对应的vnode（包括普通的标签及component）
  */
 export function createElement(
   context,
@@ -101,7 +102,7 @@ export function _createElement(
 
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)
-    console.log('createelement', children)
+    // console.log('createelement', children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {
     children = simpleNormalizeChildren(children)
   }
@@ -110,7 +111,7 @@ export function _createElement(
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
     // undefined
-    console.log(ns, config.isReservedTag(tag))
+    // console.log(ns, config.isReservedTag(tag))
     if (config.isReservedTag(tag)) {
       if (
         process.env.NODE_ENV !== 'production' &&

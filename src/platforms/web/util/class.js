@@ -1,10 +1,22 @@
 import { isDef, isObject } from 'shared/util'
 
+/**
+ *
+ * data = {
+ *  class: { test1: true}
+ *  staticClass: 'test test1 test2'
+ * }
+ * fn(d) => 'test1 test test2'
+ */
+/**
+ * 根据vnode获取对应的className
+ */
 export function genClassForVnode(vnode) {
   let data = vnode.data
   let parentNode = vnode
   let childNode = vnode
   while (isDef(childNode.componentInstance)) {
+    // 只有被渲染后才能获取到_vnode属性
     childNode = childNode.componentInstance._vnode
     if (childNode && childNode.data) {
       data = mergeClassData(childNode.data, data)

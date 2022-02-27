@@ -139,7 +139,16 @@ export function createPatchFunction(backend) {
       }
     }
   }
-
+  function invokeCreateHooks(vnode, insertedVnodeQueue) {
+    for (let i = 0; i < cbs.create.length; ++i) {
+      cbs.create[i](emptyNode, vnode)
+    }
+    i = vnode.data.hook
+    if (isDef(i)) {
+      if (isDef(i.create)) i.create(emptyNode, vnode)
+      if (isDef(i.insert)) insertedVnodeQueue.push(vnode)
+    }
+  }
   function initComponent(vnode, insertedVnodeQueue) {
     if (isDef(vnode.data.pendingInsert)) {
       insertedVnodeQueue.push.apply(
@@ -148,12 +157,13 @@ export function createPatchFunction(backend) {
       )
       vnode.data.pendingInsert = null
     }
+    vnode.elm = vnode.componentInstance.$el
     // if (isPatchable(vnode)) {
     //   invokeCreateHooks(vnode, insertedVnodeQueue)
     //   setScope(vnode)
     // }
   }
-
+  // 根据vnode创建对应的element对象
   let creatingElmInVPre = 0
   function createElm(
     vnode,
@@ -330,6 +340,7 @@ export function createPatchFunction(backend) {
   }
 
   return function patch(oldVnode, vnode, hydrating, removeOnly) {
+    // 1：如果新的vnode存在旧的不存在则销毁oldvnode
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestoryHook(oldVnode)
       return
@@ -337,11 +348,14 @@ export function createPatchFunction(backend) {
     // 初始化标志，第一次渲染设为true
     let isInitialPatch = false
     const insertedVnodeQueue = []
+    // 2:如果新vnode存在oldVnode不存在则创建vnode并渲染
     if (isUndef(oldVnode)) {
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue)
     } else {
+      // 3:如果两者都存在
       const isRealElement = isDef(oldVnode.nodeType)
+      // 3.1: 如果两者是相似的vnode
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly)
       } else {
@@ -360,8 +374,8 @@ export function createPatchFunction(backend) {
               )
             }
           }
-          //either not server-rendered, or hydration failed
-          //create an empty node and replace it
+          // either not server-rendered, or hydration failed
+          // create an empty node and replace it
           oldVnode = emptyNodeAt(oldVnode)
         }
       }

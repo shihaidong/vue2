@@ -31,6 +31,7 @@ export default class Watcher {
     }
     vm._watchers.push(this)
     // options
+    console.log(options)
     if (options) {
       this.deep = !!options.deep
       this.user = !!options.user

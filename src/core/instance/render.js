@@ -73,7 +73,6 @@ export function renderMixin(Vue) {
   Vue.prototype._render = function () {
     const vm = this
     const { render, _parentVnode } = vm.$options
-
     if (_parentVnode) {
       vm.$scopedSlots = normalizeScopedSlots(
         _parentVnode.data.scopedSlots,

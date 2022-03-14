@@ -23,4 +23,4 @@ const i = Vue.extend({
     }
   }
 })
-console.log(new i())
+// console.log(new i())

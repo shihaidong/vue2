@@ -11,7 +11,7 @@ const seenObjects = new Set()
  */
 export function traverse(val) {
   _traverse(val, seenObjects)
-  console.log(seenObjects)
+  // console.log(seenObjects)
   // seenObjects.clear()
 }
 

@@ -95,7 +95,7 @@ function protoAugment(target, src) {
  * @param {any} value
  * @param {asRootData} boolean
  * @return {Observer | void}
- * 如果传入的是一个对象，则判断是否已经是Observer，直接返回，
+ * 如果传入的是一个对象，则判断是否已经是Observer，直接返回undefined，
  * 如果不是则用该对象实例化Observer再返回
  */
 export function observe(value, asRootData) {

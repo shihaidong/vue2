@@ -2,7 +2,7 @@ import { remove } from '../util'
 import config from '../config.js'
 let uid = 0
 export default class Dep {
-  static target
+  // static target
   // id: number;
   // subs: Array<Watcher>;
 
@@ -29,7 +29,7 @@ export default class Dep {
     // stabilize the subscriber list first
     const subs = this.subs.slice()
     console.log(subs)
-    //config.async默认为true
+    // config.async默认为true
     if (process.env.NODE_ENV !== 'production' && !config.async) {
       // subs aren't sorted in scheduler if not running async
       // we need to sort them now to make sure they fire in correct

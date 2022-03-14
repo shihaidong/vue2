@@ -63,7 +63,7 @@ let k = new Vue({
   methods: {
     test2() {
       // console.log(this)
-      console.log('test222')
+      // console.log('test222')
     }
   },
   beforeCreate() {
@@ -85,7 +85,7 @@ let k = new Vue({
 //   { deep: true },
 //   true
 // )
-test('test/index3')
+// test('test/index3')
 // k.$options._base.mixin({
 //   methods: {
 //     test() {
@@ -101,4 +101,4 @@ test('test/index3')
 // }
 // k.$options._base.use(useObj, { edit: true })
 
-console.log(k)
+// console.log(k)

@@ -1,7 +1,7 @@
 import { mark, measure } from '../util/perf'
 import { mergeOptions, test, extend } from '../util'
 import config from '../config.js'
-
+// import { initProxy } from './proxy'
 import { initLifecycle, callHook } from './lifecycle'
 import { initEvents } from './events'
 import { initRender } from './render'
@@ -37,6 +37,7 @@ export function initMixin(Vue) {
     }
     if (process.env.NODE_ENV !== 'production') {
       // initProxy(vm)
+      vm._renderProxy = vm
     } else {
       vm._renderProxy = vm
     }

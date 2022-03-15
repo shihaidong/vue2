@@ -13,6 +13,11 @@ export const VueObj = {
       console.log(this.name)
     }
   },
+  created() {
+    // setTimeout(() => {
+    //   this.name = 'aa'
+    // }, 5000)
+  },
   render(h) {
     return h('div', this.name)
   }

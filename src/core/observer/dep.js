@@ -45,6 +45,7 @@ export default class Dep {
 // The current target watcher being evaluated.
 // This is globally unique because only one watcher
 // can be evaluated at a time.
+// Dep.target在执行$mount后才会被初始化，之后会监听收集到的依赖
 Dep.target = null
 const targetStack = []
 

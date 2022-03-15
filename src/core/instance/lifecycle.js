@@ -158,6 +158,8 @@ export function mountComponent(vm, el, hydrating) {
     }
   } else {
     updateComponent = () => {
+      // vm._render会初始化vnode
+      // vm._update会patchvnode
       vm._update(vm._render(), hydrating)
     }
   }
